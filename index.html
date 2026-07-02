@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<title>My Life Hub</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="LifeHub">
+<meta name="theme-color" content="#4F46E5">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+:root{
+  --accent:#4F46E5;--accent-bg:#EEF2FF;
+  --green:#059669;--green-bg:#D1FAE5;
+  --rose:#BE185D;--rose-bg:#FCE7F3;
+  --violet:#7C3AED;--violet-bg:#EDE9FE;
+  --amber:#D97706;--amber-bg:#FEF3C7;
+  --teal:#0F766E;--teal-bg:#CCFBF1;
+  --gold:#F5C842;
+  --text:#0F172A;--text2:#475569;--text3:#94A3B8;
+  --border:#E2E8F0;--surface:#fff;--surface2:#F8FAFC;--surface3:#F1F5F9;
+  --radius:16px;--nav-h:68px
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{overflow-x:hidden}
+body{background:#ECEEFF;max-width:430px;margin:0 auto;padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 16px);min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.hidden{display:none!important}
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#fff;border-top:1px solid #E2E8F0;display:flex;height:calc(var(--nav-h) + env(safe-area-inset-bottom));padding:6px 2px calc(10px + env(safe-area-inset-bottom));z-index:100;box-shadow:0 -4px 24px rgba(15,12,41,.09)}
+.nt{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;border-radius:10px;padding:6px 1px;min-height:44px;transition:all .18s}
+.nt i{font-size:20px;color:#94A3B8;transition:all .18s}
+.nt span{font-size:9px;color:#94A3B8;font-weight:700;transition:all .18s}
+.nt.on{background:var(--nb,#EEF2FF)}
+.nt.on i,.nt.on span{color:var(--nc,#4F46E5)}
+.hero{background:linear-gradient(135deg,#0F0C29 0%,#312E9E 55%,#4F46E5 100%);padding:24px 18px 20px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:rgba(245,200,66,.12);pointer-events:none}
+.hero::after{content:"";position:absolute;bottom:-30px;left:-20px;width:120px;height:120px;border-radius:50%;background:rgba(124,58,237,.18);pointer-events:none}
+.hero-top{display:flex;justify-content:space-between;align-items:flex-start;position:relative;z-index:1}
+.hero-greet{font-size:12px;color:rgba(255,255,255,.6);font-weight:600;margin-bottom:3px}
+.hero-name{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.3px}
+.hero-date{font-size:11px;color:rgba(255,255,255,.45);margin-top:2px}
+.streak-badge{background:linear-gradient(135deg,#F5C842,#E8A020);color:#78350F;font-size:11px;font-weight:800;padding:6px 11px;border-radius:20px;display:flex;align-items:center;gap:4px;white-space:nowrap;box-shadow:0 4px 12px rgba(245,200,66,.4)}
+.hero-prog{position:relative;z-index:1;margin-top:18px}
+.hero-prog-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:7px}
+.hero-prog-lbl{font-size:11px;color:rgba(255,255,255,.55);font-weight:600}
+.hero-prog-pct{font-size:24px;font-weight:800;color:#fff}
+.hero-prog-track{height:8px;background:rgba(255,255,255,.18);border-radius:6px;overflow:hidden}
+.hero-prog-fill{height:100%;background:linear-gradient(90deg,#F5C842,#FBBF24);border-radius:6px;transition:width .5s ease}
+.hero-stats{display:flex;gap:0;margin-top:14px;position:relative;z-index:1}
+.hs-item{flex:1;text-align:center}
+.hs-val{font-size:17px;font-weight:800;color:#fff}
+.hs-lbl{font-size:9px;color:rgba(255,255,255,.5);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-top:1px}
+.hs-div{width:1px;background:rgba(255,255,255,.15);margin:4px 0}
+.sec{display:flex;align-items:center;justify-content:space-between;padding:14px 18px 7px}
+.sec-lbl{font-size:11px;font-weight:800;color:#94A3B8;text-transform:uppercase;letter-spacing:.7px}
+.sec-act{font-size:13px;color:#4F46E5;font-weight:700;cursor:pointer;padding:6px 2px;margin:-6px -2px}
+.card{background:#fff;border-radius:var(--radius);margin:0 16px 10px;border:1px solid #E2E8F0;overflow:hidden}
+.card-pad{padding:16px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 16px 10px}
+.tile{border-radius:var(--radius);padding:14px;border:none}
+.tile-icon{width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:19px;margin-bottom:9px}
+.tile-val{font-size:22px;font-weight:800;letter-spacing:-.5px;margin-bottom:2px}
+.tile-lbl{font-size:11px;font-weight:700;opacity:.75}
+.tile-sub{font-size:11px;font-weight:700;margin-top:5px;opacity:.85}
+.mood-card{margin:0 16px 10px;border-radius:var(--radius);overflow:hidden;border:1px solid #E2E8F0}
+.mood-top{padding:14px 16px 10px;background:linear-gradient(135deg,#F5F3FF,#EDE9FE)}
+.mood-q{font-size:13px;color:#5B21B6;font-weight:700;margin-bottom:10px}
+.mood-row{display:flex;gap:5px}
+.mood-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:10px 2px;border-radius:12px;border:2px solid #E2E8F0;cursor:pointer;background:#fff;transition:all .2s}
+.mood-btn.on{border-color:#7C3AED;background:linear-gradient(135deg,#F5F3FF,#EDE9FE)}
+.moji{font-size:26px;line-height:1;filter:grayscale(.7);transition:all .2s;display:block}
+.mood-btn.on .moji{filter:grayscale(0);transform:scale(1.15)}
+.mood-btn span:last-child{font-size:10px;color:#94A3B8;font-weight:700}
+.mood-btn.on span:last-child{color:#5B21B6}
+.qrow{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid #F1F5F9;cursor:pointer;transition:background .15s}
+.qrow:last-child{border-bottom:none}
+.qrow:active{background:#F8FAFC}
+.qrow-ic{width:36px;height:36px;min-width:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px}
+.qrow-name{font-size:14px;font-weight:700;color:#0F172A;flex:1}
+.qrow-sub{font-size:12px;color:#94A3B8;margin-top:1px;font-weight:500}
+.fp-row{display:flex;gap:7px;padding:0 16px 10px;overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+.fp-row::-webkit-scrollbar{display:none}
+.fp{padding:7px 14px;border-radius:20px;font-size:12px;font-weight:700;border:1.5px solid #E2E8F0;background:#fff;color:#64748B;white-space:nowrap;cursor:pointer;transition:all .15s}
+.fp.on{background:linear-gradient(135deg,#059669,#047857);border-color:transparent;color:#fff}
+.task-item{display:flex;align-items:center;gap:8px;padding:11px 10px 11px 16px;border-bottom:1px solid #F1F5F9;transition:background .15s}
+.ti-action-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:#94A3B8;font-size:15px;cursor:pointer;flex-shrink:0}
+.ti-action-btn:active{transform:scale(.9)}
+.task-item:last-child{border-bottom:none}
+.task-item.done{opacity:.38}
+.task-item.done .ti-name{text-decoration:line-through}
+.big-chk{width:36px;height:36px;min-width:36px;border-radius:50%;border:2.5px solid #CBD5E1;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.big-chk.on{background:linear-gradient(135deg,#4F46E5,#7C3AED);border-color:transparent;box-shadow:0 3px 10px rgba(79,70,229,.35)}
+.big-chk i{font-size:16px;color:#fff;opacity:0}
+.big-chk.on i{opacity:1}
+.ti-name{font-size:14px;color:#0F172A;font-weight:700;margin-bottom:4px}
+.ti-chip{font-size:10px;padding:2px 7px;border-radius:7px;font-weight:700;display:inline-flex;align-items:center;gap:3px;margin-right:4px}
+.ti-time{font-size:11px;color:#94A3B8;font-weight:600}
+.add-form{margin:0 16px 10px;background:#fff;border-radius:var(--radius);padding:16px;border:2px solid #059669}
+.fl{margin-bottom:10px}
+.fl label{font-size:11px;font-weight:800;color:#64748B;display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.4px}
+.fi{width:100%;padding:11px 13px;font-size:14px;border:1.5px solid #E2E8F0;border-radius:10px;background:#F8FAFC;color:#0F172A;outline:none;font-weight:600}
+.fi:focus{border-color:#059669;background:#fff}
+.g2f{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.btn-row{display:flex;gap:8px;margin-top:6px}
+.b-cancel{flex:1;padding:11px;border-radius:10px;border:1.5px solid #E2E8F0;background:transparent;color:#64748B;font-size:13px;font-weight:700;cursor:pointer}
+.b-save{flex:2;padding:11px;border-radius:10px;border:none;background:linear-gradient(135deg,#059669,#047857);color:#fff;font-size:13px;font-weight:800;cursor:pointer}
+.dash-task{display:flex;align-items:center;gap:11px;padding:12px 16px;border-bottom:1px solid #F1F5F9;cursor:pointer;transition:background .15s}
+.dash-task:last-child{border-bottom:none}
+.dash-task.done{opacity:.35}
+.dash-task.done .dt-n{text-decoration:line-through}
+.sm-chk{width:28px;height:28px;min-width:28px;border-radius:50%;border:2px solid #CBD5E1;display:flex;align-items:center;justify-content:center;transition:all .18s;flex-shrink:0}
+.sm-chk.on{background:linear-gradient(135deg,#4F46E5,#7C3AED);border-color:transparent}
+.sm-chk i{font-size:13px;color:#fff;opacity:0}
+.sm-chk.on i{opacity:1}
+.dt-n{font-size:13px;color:#0F172A;font-weight:600;flex:1}
+.dt-time{font-size:11px;color:#94A3B8;font-weight:600}
+.grad-card{border-radius:var(--radius);margin:0 16px 10px;padding:16px}
+.gc-title{font-size:14px;font-weight:800;color:#fff;display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.wdots{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}
+.wd{width:34px;height:34px;border-radius:50%;border:2px solid rgba(255,255,255,.4);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .18s;background:rgba(255,255,255,.12)}
+.wd.on{background:#fff;border-color:#fff}
+.wd.on i{color:#0F766E}
+.wd i{color:rgba(255,255,255,.65);font-size:14px}
+.w-btns{display:flex;gap:8px}
+.wbtn{flex:1;padding:10px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;text-align:center;background:rgba(255,255,255,.22);color:#fff;border:1.5px solid rgba(255,255,255,.3)}
+.wghost{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15)}
+.sleep-inp-row{display:flex;gap:8px}
+.sleep-inp-row input{flex:1;padding:10px 12px;font-size:14px;border:1.5px solid rgba(255,255,255,.3);border-radius:10px;background:rgba(255,255,255,.15);color:#fff;outline:none;font-weight:600}
+.sleep-inp-row input::placeholder{color:rgba(255,255,255,.45)}
+.slog-btn{padding:10px 16px;background:#fff;border:none;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer}
+.schart{display:flex;align-items:flex-end;gap:4px;height:68px;margin-top:10px}
+.sbc{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px}
+.sbv{font-size:9px;color:rgba(255,255,255,.65);min-height:11px;text-align:center;font-weight:700}
+.sbi{width:100%;border-radius:3px 3px 0 0;transition:height .35s}
+.sbd{font-size:9px;color:rgba(255,255,255,.5);font-weight:700}
+.h-card{background:#fff;border-radius:var(--radius);margin:0 16px 10px;border:1px solid #E2E8F0;overflow:hidden}
+.h-sec-title{font-size:13px;font-weight:800;color:#0F172A;padding:13px 16px 10px;border-bottom:1px solid #F1F5F9;display:flex;align-items:center;gap:7px}
+.supp-row{display:flex;align-items:center;gap:11px;padding:12px 16px;border-bottom:1px solid #F1F5F9}
+.supp-row:last-child{border-bottom:none}
+.sq{width:24px;height:24px;min-width:24px;border-radius:6px;border:2px solid #CBD5E1;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s}
+.sq.on{background:linear-gradient(135deg,#059669,#047857);border-color:transparent}
+.sq.on i{color:#fff;font-size:12px}
+.sn{flex:1;font-size:13px;color:#0F172A;font-weight:700}
+.st2{font-size:11px;color:#94A3B8;font-weight:600}
+.wk-row{display:flex;gap:7px;flex-wrap:wrap;padding:12px 16px}
+.wk-pill{padding:8px 12px;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;transition:all .18s;border:2px solid #E2E8F0;background:#F8FAFC;color:#475569;display:flex;align-items:center;gap:5px}
+.wk-pill.on{background:linear-gradient(135deg,#5B21B6,#7C3AED);border-color:transparent;color:#fff;box-shadow:0 3px 10px rgba(91,33,182,.28)}
+.tip-row{display:flex;align-items:flex-start;gap:11px;padding:12px 16px;border-bottom:1px solid #F1F5F9}
+.tip-row:last-child{border-bottom:none}
+.tip-ic{width:36px;height:36px;min-width:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:17px}
+.tip-title{font-size:13px;font-weight:800;color:#0F172A;margin-bottom:1px}
+.tip-sub{font-size:12px;color:#64748B;line-height:1.4;font-weight:500}
+.focus-hero{background:linear-gradient(135deg,#4C1D95,#5B21B6,#6D28D9);padding:24px 18px 20px}
+.timer-box{background:#fff;border-radius:var(--radius);margin:0 16px 10px;padding:22px 16px;border:1px solid #E2E8F0;text-align:center}
+.t-phase{font-size:13px;font-weight:800;color:#5B21B6;margin-bottom:16px}
+.t-ring{display:inline-flex;align-items:center;justify-content:center;position:relative;width:160px;height:160px;margin-bottom:4px}
+.t-ring svg{width:160px;height:160px}
+.t-center{position:absolute;text-align:center}
+.t-num{font-size:32px;font-weight:800;color:#0F172A;letter-spacing:-1px}
+.t-sub{font-size:11px;color:#94A3B8;font-weight:700;margin-top:2px}
+.sdots{display:flex;justify-content:center;gap:7px;margin:10px 0 3px}
+.sdot{width:10px;height:10px;border-radius:50%;background:linear-gradient(135deg,#5B21B6,#7C3AED)}
+.sdot.empty{background:transparent;border:2px solid #E2E8F0}
+.sess-lbl{font-size:12px;color:#94A3B8;font-weight:700;margin-bottom:14px}
+.tbtns{display:flex;gap:9px;justify-content:center}
+.t-btn{padding:11px 16px;border-radius:11px;border:1.5px solid #E2E8F0;background:#F8FAFC;color:#0F172A;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px}
+.t-btn.pri{background:linear-gradient(135deg,#5B21B6,#7C3AED);border-color:transparent;color:#fff;padding:11px 28px;box-shadow:0 5px 18px rgba(91,33,182,.38)}
+.dp-row{display:flex;gap:8px;padding:0 16px 12px}
+.dp{flex:1;padding:10px;border-radius:10px;border:1.5px solid #E2E8F0;background:#fff;color:#64748B;font-size:12px;font-weight:700;cursor:pointer;text-align:center}
+.dp.on{background:linear-gradient(135deg,#EDE9FE,#DDD6FE);border-color:#7C3AED;color:#4C1D95}
+.ref-card{background:#fff;border-radius:var(--radius);margin:0 16px 10px;padding:16px;border:1px solid #E2E8F0}
+.ref-q{font-size:14px;font-weight:800;color:#0F172A;margin-bottom:10px;line-height:1.5}
+.ref-area{width:100%;padding:11px 13px;font-size:13px;border:1.5px solid #E2E8F0;border-radius:10px;background:#F8FAFC;color:#0F172A;resize:none;height:78px;font-family:inherit;display:block;margin-bottom:10px;outline:none;line-height:1.5}
+.ref-save{width:100%;padding:12px;background:linear-gradient(135deg,#5B21B6,#7C3AED);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer}
+.period-hero{background:linear-gradient(135deg,#831843,#BE185D,#EC4899);padding:24px 18px 20px;position:relative;overflow:hidden}
+.period-hero::before{content:"";position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.1);pointer-events:none}
+.phase-strip{display:flex;gap:0;margin-top:16px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.2)}
+.phase-seg{flex:1;padding:9px 2px;text-align:center;font-size:8px;font-weight:800;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.2px}
+.phase-emoji{display:block;font-size:15px;margin-bottom:3px}
+.phase-seg.active{background:rgba(255,255,255,.25);color:#fff}
+.vibe-card{border-radius:var(--radius);margin:0 16px 10px;padding:20px 18px;color:#fff;position:relative;overflow:hidden}
+.vibe-card::before{content:"";position:absolute;top:-20px;right:-20px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,.1);pointer-events:none}
+.vibe-emoji{font-size:38px;line-height:1;margin-bottom:8px}
+.vibe-title{font-size:17px;font-weight:800;letter-spacing:-.2px}
+.vibe-tag{font-size:12px;opacity:.85;margin-top:2px;font-weight:600}
+.vibe-tip{font-size:12.5px;margin-top:12px;background:rgba(255,255,255,.16);padding:10px 12px;border-radius:11px;font-weight:600;line-height:1.55;position:relative;z-index:1}
+.chance-row{display:flex;gap:8px;margin-top:10px;position:relative;z-index:1}
+.chance-chip{flex:1;background:rgba(255,255,255,.18);border-radius:11px;padding:10px}
+.chance-chip .cv{font-size:14px;font-weight:800}
+.chance-chip .cl{font-size:9px;opacity:.75;text-transform:uppercase;letter-spacing:.4px;margin-top:2px;font-weight:700}
+.cal-legend{display:flex;flex-wrap:wrap;gap:10px 14px;margin-bottom:12px;font-size:10px;font-weight:700;color:#64748B}
+.legend-dot{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:4px;vertical-align:middle}
+.fact-card{background:linear-gradient(135deg,#FDF4FF,#FCE7F3);border-radius:var(--radius);margin:0 16px 10px;padding:14px 16px;border:1px solid #FBCFE8}
+.fact-label{font-size:10px;font-weight:800;color:#BE185D;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.fact-text{font-size:13px;color:#831843;font-weight:600;line-height:1.6}
+.cal-nav-btn{width:38px;height:38px;display:inline-flex;align-items:center;justify-content:center;color:#64748B;font-size:16px;cursor:pointer;border-radius:9px;transition:background .15s,transform .1s}
+.cal-nav-btn:active{background:#F1F5F9;transform:scale(.92)}
+.meter-row{margin-bottom:14px}
+.meter-row:last-child{margin-bottom:0}
+.meter-top{display:flex;justify-content:space-between;align-items:baseline;font-size:12.5px;font-weight:700;color:#0F172A;margin-bottom:6px}
+.meter-top span:last-child{font-size:11px;font-weight:800}
+.meter-track{height:9px;background:#F1F5F9;border-radius:6px;overflow:hidden}
+.meter-fill{height:100%;border-radius:6px;transition:width .5s ease}
+.period-stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:14px}
+.pstat{text-align:center;padding:4px}
+.pstat-val{font-size:18px;font-weight:800;color:#fff}
+.pstat-lbl{font-size:9px;color:rgba(255,255,255,.55);font-weight:700;text-transform:uppercase;letter-spacing:.4px;margin-top:1px}
+.pstat-div{width:1px;background:rgba(255,255,255,.2);margin:6px 0}
+.period-cal-card{background:#fff;border-radius:var(--radius);margin:0 16px 10px;padding:14px 16px;border:1px solid #E2E8F0}
+.pcal{display:flex;flex-wrap:wrap;gap:4px}
+.pcb{width:calc((100% - 24px)/7);aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;cursor:default;transition:all .15s}
+.pcb.period{background:linear-gradient(135deg,#BE185D,#EC4899);color:#fff}
+.pcb.fertile{background:#CCFBF1;color:#0F766E}
+.pcb.ovulation{background:linear-gradient(135deg,#F5C842,#FBBF24);color:#78350F;font-weight:800}
+.pcb.predicted{background:#FCE7F3;color:#BE185D;border:1.5px dashed #EC4899}
+.pcb.empty{background:#F1F5F9;color:#CBD5E1}
+.pcb.today{outline:2.5px solid #0F172A;outline-offset:-2.5px}
+.sym-card{background:#fff;border-radius:var(--radius);margin:0 16px 10px;padding:14px 16px;border:1px solid #E2E8F0}
+.sym-title{font-size:12px;font-weight:800;color:#64748B;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.sym-grid{display:flex;flex-wrap:wrap;gap:7px}
+.sym-pill{padding:7px 11px;border-radius:20px;font-size:12px;font-weight:700;border:1.5px solid #E2E8F0;background:#F8FAFC;color:#64748B;cursor:pointer;transition:all .18s}
+.sym-pill.on{background:linear-gradient(135deg,#FCE7F3,#FBD0E5);border-color:#EC4899;color:#9D174D}
+.flow-card{background:#fff;border-radius:var(--radius);margin:0 16px 10px;padding:14px 16px;border:1px solid #E2E8F0}
+.flow-title{font-size:12px;font-weight:800;color:#64748B;text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
+.flow-pills{display:flex;gap:8px}
+.flow-pill,.energy-pill{flex:1;padding:9px 4px;border-radius:10px;border:1.5px solid #E2E8F0;background:#F8FAFC;color:#64748B;font-size:11px;font-weight:700;cursor:pointer;text-align:center}
+.flow-pill.on,.energy-pill.on{background:linear-gradient(135deg,#FCE7F3,#FBD0E5);border-color:#EC4899;color:#9D174D}
+.period-btns-row{display:flex;gap:8px;margin:0 16px 10px}
+.p-btn{flex:1;padding:13px;border-radius:12px;font-size:13px;font-weight:800;cursor:pointer;text-align:center;border:none;display:flex;align-items:center;justify-content:center;gap:6px}
+.p-start{background:linear-gradient(135deg,#BE185D,#EC4899);color:#fff;box-shadow:0 4px 14px rgba(190,24,93,.3)}
+.p-end{background:#FCE7F3;color:#BE185D;border:1.5px solid #FBCFE8}
+.period-hist-card{background:#fff;border-radius:var(--radius);margin:0 16px 10px;padding:14px 16px;border:1px solid #E2E8F0}
+.ph-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #F8FAFC}
+.ph-row:last-child{border-bottom:none}
+.ph-date{font-size:13px;font-weight:700;color:#0F172A}
+.ph-detail{font-size:11px;color:#94A3B8;margin-top:1px}
+.ph-dur{font-size:13px;font-weight:800;color:#BE185D;background:#FCE7F3;padding:3px 10px;border-radius:20px}
+.devot-hero{background:linear-gradient(135deg,#78350F,#B45309,#D97706);padding:24px 18px 20px;position:relative;overflow:hidden}
+.devot-streak-badge{background:linear-gradient(135deg,#F5C842,#E8A020);color:#78350F;font-size:11px;font-weight:800;padding:6px 11px;border-radius:20px;display:inline-flex;align-items:center;gap:4px;white-space:nowrap;box-shadow:0 4px 12px rgba(245,200,66,.4);margin-top:10px}
+.reading-card{background:#fff;border-radius:var(--radius);margin:0 16px 10px;padding:18px;border:1px solid #E2E8F0}
+.reading-date{font-size:11px;font-weight:800;color:#B45309;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid #F1F5F9}
+.reading-label{font-size:10px;font-weight:800;color:#D97706;text-transform:uppercase;letter-spacing:.6px;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.reading-back{color:#94A3B8;font-weight:700;cursor:pointer;font-size:11px;padding:8px 4px;margin:-8px -4px}
+.reading-topic{font-size:19px;font-weight:800;color:#0F172A;margin-bottom:4px;display:flex;align-items:center;gap:8px}
+.reading-sec-lbl{font-size:10px;font-weight:800;color:#94A3B8;text-transform:uppercase;letter-spacing:.5px;margin:14px 0 6px}
+.reading-body{font-size:13.5px;color:#334155;line-height:1.7;font-weight:500}
+.reading-mark-btn{width:100%;margin-top:16px;padding:12px;border-radius:11px;border:none;font-size:13px;font-weight:800;cursor:pointer;background:linear-gradient(135deg,#B45309,#D97706);color:#fff}
+.reading-mark-btn.done{background:#F1F5F9;color:#94A3B8;cursor:default}
+.theme-chip-row{display:flex;gap:7px;flex-wrap:wrap;padding:0 16px 10px}
+.theme-chip{padding:9px 14px;border-radius:20px;font-size:12px;font-weight:700;border:1.5px solid #E2E8F0;background:#fff;color:#64748B;cursor:pointer;white-space:nowrap;transition:all .15s}
+.theme-chip:active{transform:scale(.94)}
+.theme-chip.on{background:linear-gradient(135deg,#B45309,#D97706);border-color:transparent;color:#fff}
+.theme-results{margin:0 16px 10px}
+.theme-result-row{display:flex;align-items:center;gap:11px;padding:11px 14px;background:#fff;border:1px solid #E2E8F0;border-radius:12px;margin-bottom:7px;cursor:pointer}
+.plan-card{background:#fff;border-radius:var(--radius);margin:0 16px 10px;padding:15px 16px;border:1px solid #E2E8F0}
+.plan-top{display:flex;align-items:center;gap:11px;margin-bottom:10px}
+.plan-emoji{font-size:26px}
+.plan-title{font-size:14px;font-weight:800;color:#0F172A}
+.plan-desc{font-size:11.5px;color:#94A3B8;font-weight:600;margin-top:1px}
+.plan-progress-track{height:7px;background:#F1F5F9;border-radius:5px;overflow:hidden;margin-bottom:10px}
+.plan-progress-fill{height:100%;border-radius:5px;background:linear-gradient(90deg,#B45309,#F59E0B);transition:width .4s ease}
+.plan-btn{width:100%;padding:10px;border-radius:10px;border:1.5px solid #D97706;background:#FEF3C7;color:#92400E;font-size:12.5px;font-weight:800;cursor:pointer}
+.plan-btn.done{background:#D1FAE5;border-color:#059669;color:#065F46}
+.cat-pill-row{display:flex;gap:7px;padding:0 16px 10px;overflow-x:auto;-webkit-overflow-scrolling:touch;scroll-behavior:smooth}
+.cat-pill{padding:9px 14px;border-radius:20px;font-size:11.5px;font-weight:700;border:1.5px solid #E2E8F0;background:#fff;color:#64748B;cursor:pointer;white-space:nowrap;transition:all .15s}
+.cat-pill:active{transform:scale(.94)}
+.cat-pill.on{background:linear-gradient(135deg,#B45309,#D97706);border-color:transparent;color:#fff}
+.tag-chip-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.tag-chip{padding:8px 12px;border-radius:16px;font-size:11px;font-weight:700;border:1.5px solid #E2E8F0;background:#F8FAFC;color:#64748B;cursor:pointer;transition:all .15s}
+.tag-chip:active{transform:scale(.94)}
+.tag-chip.on{background:linear-gradient(135deg,#FEF3C7,#FDE68A);border-color:#D97706;color:#92400E}
+.journal-search{width:100%;padding:11px 13px;font-size:13px;border:1.5px solid #E2E8F0;border-radius:10px;background:#F8FAFC;color:#0F172A;outline:none;font-weight:600;margin-bottom:10px}
+.journal-entry{padding:11px 0;border-bottom:1px solid #F1F5F9}
+.journal-entry:last-child{border-bottom:none}
+.journal-entry-date{font-size:11px;font-weight:800;color:#B45309;margin-bottom:4px}
+.journal-entry-text{font-size:13px;color:#334155;font-weight:500;line-height:1.5}
+.journal-entry-tags{margin-top:5px;display:flex;gap:5px;flex-wrap:wrap}
+.journal-entry-tag{font-size:9.5px;font-weight:800;padding:2px 8px;border-radius:10px;background:#FEF3C7;color:#92400E}
+.pr-stat-tile{background:#fff;border-radius:14px;padding:12px 8px;text-align:center;border:1px solid #E2E8F0}
+.pr-stat-val{font-size:19px;font-weight:800;color:#0F172A}
+.pr-stat-lbl{font-size:9.5px;font-weight:700;color:#94A3B8;text-transform:uppercase;letter-spacing:.3px;margin-top:2px}
+.prayer-item{border-radius:12px;margin-bottom:8px;padding:12px}
+.prayer-item.active-item{background:#fff;border:1px solid #E2E8F0}
+.prayer-item.answered-item{background:linear-gradient(135deg,#FFFBEB,#FEF3C7);border:1.5px solid #F5C842}
+.prayer-answered-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:800;color:#92400E;background:rgba(245,200,66,.3);padding:2px 8px;border-radius:10px;margin-top:4px}
+.prayer-note-inp{width:100%;margin-top:8px;padding:8px 10px;font-size:12px;border:1px solid #FDE68A;border-radius:8px;background:#fff;color:#78350F;font-weight:500;outline:none}
+.journal-streak-card{margin:0 16px 10px;padding:12px 16px;background:linear-gradient(135deg,#B45309,#D97706);border-radius:14px;display:flex;align-items:center;gap:10px;color:#fff}
+.memory-card{margin:0 16px 10px;padding:14px 16px;background:linear-gradient(135deg,#EDE9FE,#DDD6FE);border-radius:var(--radius);border:1px solid #C4B5FD}
+.memory-label{font-size:10px;font-weight:800;color:#5B21B6;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
+.memory-text{font-size:12.5px;color:#4C1D95;font-weight:600;line-height:1.6;font-style:italic}
+.devot-hero::before{content:"";position:absolute;top:-30px;right:-30px;width:130px;height:130px;border-radius:50%;background:rgba(245,200,66,.15);pointer-events:none}
+.verse-card{background:#fff;border-radius:var(--radius);margin:0 16px 10px;padding:18px;border:1px solid #E2E8F0}
+.verse-ref{font-size:11px;font-weight:800;color:#D97706;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.verse-text{font-size:15px;color:#0F172A;line-height:1.7;font-style:italic;font-weight:500;border-left:3px solid #F5C842;padding-left:14px}
+.verse-share-btn{margin-top:12px;width:100%;padding:11px;border-radius:10px;border:1.5px solid #D97706;background:#FEF3C7;color:#92400E;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.prayer-log-card{background:#fff;border-radius:var(--radius);margin:0 16px 10px;padding:14px 16px;border:1px solid #E2E8F0}
+.prayer-inp{width:100%;padding:11px 13px;font-size:13px;border:1.5px solid #E2E8F0;border-radius:10px;background:#F8FAFC;color:#0F172A;outline:none;font-family:inherit;margin-bottom:8px;font-weight:500;display:block}
+.prayer-save-btn{width:100%;padding:11px;background:linear-gradient(135deg,#B45309,#D97706);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer}
+.prayer-item{display:flex;align-items:flex-start;gap:11px;padding:11px 0;border-bottom:1px solid #F1F5F9}
+.prayer-item:last-child{border-bottom:none}
+.prayer-item.answered .prayer-text{text-decoration:line-through;opacity:.5}
+.prayer-chk{width:26px;height:26px;min-width:26px;border-radius:50%;border:2px solid #E2E8F0;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .2s;flex-shrink:0;margin-top:1px}
+.prayer-chk.on{background:linear-gradient(135deg,#D97706,#F59E0B);border-color:transparent}
+.prayer-chk.on i{color:#fff;font-size:12px}
+.prayer-text{font-size:13px;color:#0F172A;font-weight:600;flex:1;line-height:1.4}
+.prayer-date{font-size:10px;color:#94A3B8;margin-top:2px;font-weight:600}
+.prayer-del{color:#E2E8F0;font-size:18px;cursor:pointer;padding:10px 8px;min-width:36px;min-height:36px;display:flex;align-items:center;justify-content:center}
+.checklist-row{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid #F1F5F9;cursor:pointer}
+.checklist-row:last-child{border-bottom:none}
+.cl-chk{width:22px;height:22px;min-width:22px;border-radius:6px;border:2px solid #E2E8F0;display:flex;align-items:center;justify-content:center;transition:all .18s}
+.cl-chk.on{background:linear-gradient(135deg,#D97706,#F59E0B);border-color:transparent}
+.cl-chk.on i{color:#fff;font-size:11px}
+.cl-name{font-size:13px;font-weight:700;color:#0F172A;flex:1}
+.acct-hero{background:linear-gradient(135deg,#0C4A6E,#0E7490,#0891B2);padding:24px 18px 20px;position:relative;overflow:hidden}
+.acct-hero::before{content:"";position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.1);pointer-events:none}
+.score-ring-wrap{display:flex;justify-content:center;margin:12px 0 4px}
+.score-ring{position:relative;width:140px;height:140px;display:inline-flex;align-items:center;justify-content:center}
+.score-ring svg{width:140px;height:140px}
+.score-center{position:absolute;text-align:center}
+.score-num{font-size:34px;font-weight:800;color:#fff;letter-spacing:-1px}
+.score-lbl{font-size:10px;color:rgba(255,255,255,.6);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.score-breakdown{background:#fff;border-radius:var(--radius);margin:0 16px 10px;border:1px solid #E2E8F0;overflow:hidden}
+.sb-row{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid #F1F5F9}
+.sb-row:last-child{border-bottom:none}
+.sb-icon{width:32px;height:32px;min-width:32px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:15px}
+.sb-label{font-size:13px;font-weight:700;color:#0F172A}
+.sb-bar-wrap{flex:1;height:6px;background:#F1F5F9;border-radius:4px;overflow:hidden;margin:0 8px}
+.sb-bar{height:100%;border-radius:4px;transition:width .5s ease}
+.sb-pts{font-size:12px;font-weight:800;color:#64748B}
+.commit-card{background:#fff;border-radius:var(--radius);margin:0 16px 10px;padding:14px 16px;border:1px solid #E2E8F0}
+.commit-inp{width:100%;padding:11px 13px;font-size:13px;border:1.5px solid #E2E8F0;border-radius:10px;background:#F8FAFC;color:#0F172A;outline:none;font-family:inherit;margin-bottom:8px;font-weight:500;display:block}
+.commit-btn{width:100%;padding:11px;background:linear-gradient(135deg,#0E7490,#0891B2);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer;margin-bottom:6px}
+.commit-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid #F1F5F9}
+.commit-item:last-child{border-bottom:none}
+.commit-chk{width:22px;height:22px;min-width:22px;border-radius:6px;border:2px solid #E2E8F0;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .18s}
+.commit-chk.on{background:linear-gradient(135deg,#0E7490,#0891B2);border-color:transparent}
+.commit-chk.on i{color:#fff;font-size:11px}
+.commit-text{font-size:13px;font-weight:700;color:#0F172A;flex:1;line-height:1.4}
+.commit-text.kept{text-decoration:line-through;opacity:.45}
+.partner-card{background:#fff;border-radius:var(--radius);margin:0 16px 10px;padding:14px 16px;border:1px solid #E2E8F0}
+.partner-inp{width:100%;padding:11px 13px;font-size:13px;border:1.5px solid #E2E8F0;border-radius:10px;background:#F8FAFC;color:#0F172A;outline:none;font-family:inherit;margin-bottom:8px;font-weight:500}
+.share-btn{flex:1;padding:11px;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;text-align:center;display:flex;align-items:center;justify-content:center;gap:6px;border:none}
+.notif-toggle{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer}
+.toggle-track{width:46px;height:26px;border-radius:13px;background:#E2E8F0;position:relative;transition:background .2s;flex-shrink:0}
+.toggle-track.on{background:linear-gradient(135deg,#0E7490,#0891B2)}
+.toggle-thumb{width:20px;height:20px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;transition:transform .2s;box-shadow:0 2px 4px rgba(0,0,0,.15)}
+.toggle-track.on .toggle-thumb{transform:translateX(20px)}
+.bill-row{display:flex;align-items:center;gap:11px;padding:12px 16px;border-bottom:1px solid #F1F5F9;cursor:pointer;transition:background .15s}
+.bill-row:last-child{border-bottom:none}
+.b-icon{width:40px;height:40px;min-width:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.b-name{font-size:13px;font-weight:800;color:#0F172A}
+.b-due{font-size:11px;color:#94A3B8;font-weight:500;margin-top:1px}
+.b-amt{font-size:15px;font-weight:800;color:#0F172A}
+.b-badge{font-size:10px;padding:2px 8px;border-radius:20px;font-weight:800;display:inline-block;margin-top:3px}
+.bp{background:#D1FAE5;color:#065F46}.bd{background:#FEE2E2;color:#991B1B}.bs{background:#FEF3C7;color:#92400E}
+.g-add-row{margin:0 16px 8px;display:flex;gap:8px}
+.g-add-row input{flex:1;padding:11px 13px;font-size:14px;border:1.5px solid #E2E8F0;border-radius:11px;background:#fff;color:#0F172A;outline:none;font-weight:600}
+.gadd-btn{padding:11px 18px;background:linear-gradient(135deg,#0E7490,#0891B2);color:#fff;border:none;border-radius:11px;font-size:13px;font-weight:800;cursor:pointer}
+.g-item{display:flex;align-items:center;gap:11px;padding:12px 16px;border-bottom:1px solid #F1F5F9;cursor:pointer}
+.g-item:last-child{border-bottom:none}
+.g-item.got{opacity:.38}
+.g-item.got .g-name{text-decoration:line-through}
+.g-chk{width:28px;height:28px;min-width:28px;border-radius:50%;border:2px solid #CBD5E1;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.g-chk.on{background:linear-gradient(135deg,#059669,#0D9488);border-color:transparent}
+.g-chk.on i{color:#fff;font-size:14px}
+.g-name{flex:1;font-size:14px;color:#0F172A;font-weight:700}
+.g-del{color:#CBD5E1;font-size:20px;padding:10px 8px;min-width:36px;min-height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;line-height:1}
+.toast{position:fixed;top:14px;left:50%;transform:translateX(-50%);width:calc(100% - 28px);max-width:400px;background:#0F0C29;border-radius:14px;padding:13px 15px;display:flex;align-items:center;gap:11px;z-index:400;box-shadow:0 10px 36px rgba(15,12,41,.35)}
+.toast-ic{width:36px;height:36px;border-radius:50%;background:rgba(245,200,66,.2);display:flex;align-items:center;justify-content:center;min-width:36px}
+.toast-ic i{color:#F5C842;font-size:18px}
+.toast-t{font-size:13px;font-weight:800;color:#fff}
+.toast-s{font-size:11px;color:rgba(255,255,255,.55);margin-top:1px}
+.toast-x{color:rgba(255,255,255,.35);font-size:20px;cursor:pointer;padding:8px;min-width:36px;min-height:36px;display:flex;align-items:center;justify-content:center;flex-shrink:0;line-height:1;margin-left:auto}
+.page-hero-title{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.3px}
+.page-hero-sub{font-size:12px;color:rgba(255,255,255,.6);font-weight:600;margin-top:2px}
+.page-hero-row{display:flex;justify-content:space-between;align-items:flex-start}
+.page-hero-btn{background:rgba(255,255,255,.22);color:#fff;border:1.5px solid rgba(255,255,255,.35);padding:7px 14px;border-radius:9px;font-size:12px;font-weight:700;cursor:pointer}
+.life-hero{background:linear-gradient(135deg,#1E1B4B,#312E81,#4338CA);padding:22px 18px 18px}
+.life-tabs{display:flex;gap:8px;margin:0 16px 10px}
+.life-tab{flex:1;padding:10px;border-radius:11px;font-size:13px;font-weight:700;cursor:pointer;text-align:center;border:1.5px solid #E2E8F0;background:#fff;color:#64748B;transition:all .15s}
+.life-tab.on{background:linear-gradient(135deg,#312E81,#4338CA);color:#fff;border-color:transparent}
+/* ===== LUXURY POLISH ===== */
+.card,.h-card,.reading-card,.plan-card,.flow-card,.sym-card,.fact-card,.period-cal-card,.prayer-log-card,.commit-card,.partner-card,.score-breakdown,.add-form,.period-hist-card,.theme-result-row,.verse-card,.mood-card,.grad-card,.timer-box,.ref-card,.devot-hero,.hero,.period-hero,.acct-hero,.focus-hero,.life-hero,.devot-hero{box-shadow:0 3px 14px rgba(15,23,42,.05)}
+.tile,.chance-chip,.sb-icon{box-shadow:0 2px 8px rgba(15,23,42,.04)}
+.fp,.dp,.flow-pill,.energy-pill,.sym-pill,.wk-pill,.life-tab,.mood-btn,.nt,.wd,.phase-seg,.theme-chip,.cat-pill,.tag-chip,.pcb{transition:transform .12s ease,background .15s,border-color .15s,color .15s}
+.fp:active,.dp:active,.flow-pill:active,.energy-pill:active,.sym-pill:active,.wk-pill:active,.life-tab:active,.mood-btn:active,.wd:active,.nt:active,.b-save:active,.b-cancel:active,.reading-mark-btn:active,.plan-btn:active,.p-btn:active,.wbtn:active,.gadd-btn:active,.slog-btn:active,.commit-btn:active,.share-btn:active,.verse-share-btn:active,.prayer-save-btn:active,.page-hero-btn:active,.big-chk:active,.sm-chk:active,.g-chk:active,.sq:active,.cl-chk:active,.prayer-chk:active,.commit-chk:active,.gadd-btn:active,.b-icon:active{transform:scale(.95)}
+.b-save,.reading-mark-btn,.plan-btn,.p-btn,.wbtn,.gadd-btn,.slog-btn,.commit-btn,.share-btn,.verse-share-btn,.prayer-save-btn,.page-hero-btn{transition:transform .12s ease,opacity .15s}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.view-active{animation:fadeInUp .3s ease}
+.task-item,.dash-task,.checklist-row,.bill-row,.g-item,.qrow,.commit-item,.journal-entry,.ph-row{transition:background .15s}
+</style>
+</head>
+<body>
+
+<div id="toast" class="toast hidden"><div class="toast-ic"><i class="ti ti-sparkles"></i></div><div style="flex:1"><div class="toast-t" id="tt"></div><div class="toast-s" id="ts"></div></div><span class="toast-x" onclick="hideT()">x</span></div>
+
+<!-- HOME -->
+<div id="v-home">
+  <div class="hero">
+    <div class="hero-top"><div><div class="hero-greet" id="greet-sub">Good morning</div><div class="hero-name">My Life Hub</div><div class="hero-date" id="dstr"></div></div><div class="streak-badge"><i class="ti ti-flame"></i><span id="stn">0</span> day streak</div></div>
+    <div class="hero-prog"><div class="hero-prog-top"><span class="hero-prog-lbl">Today</span><span class="hero-prog-pct" id="pct">0%</span></div><div class="hero-prog-track"><div class="hero-prog-fill" id="pfill" style="width:0%"></div></div></div>
+    <div class="hero-stats"><div class="hs-item"><div class="hs-val" id="hs-done">0</div><div class="hs-lbl">Done</div></div><div class="hs-div"></div><div class="hs-item"><div class="hs-val" id="hs-left">0</div><div class="hs-lbl">Left</div></div><div class="hs-div"></div><div class="hs-item"><div class="hs-val" id="hs-score">0</div><div class="hs-lbl">Score</div></div><div class="hs-div"></div><div class="hs-item"><div class="hs-val" id="hs-water">0/8</div><div class="hs-lbl">Water</div></div></div>
+  </div>
+  <div class="mood-card"><div class="mood-top"><div class="mood-q">How are you feeling right now?</div><div class="mood-row" id="mrow"><div class="mood-btn" data-m="1" onclick="setMood(1)"><span class="moji">&#128546;</span><span>Low</span></div><div class="mood-btn" data-m="2" onclick="setMood(2)"><span class="moji">&#128533;</span><span>Meh</span></div><div class="mood-btn" data-m="3" onclick="setMood(3)"><span class="moji">&#128528;</span><span>Okay</span></div><div class="mood-btn" data-m="4" onclick="setMood(4)"><span class="moji">&#128522;</span><span>Good</span></div><div class="mood-btn" data-m="5" onclick="setMood(5)"><span class="moji">&#128514;</span><span>Great</span></div></div></div></div>
+  <div class="g2">
+    <div class="tile" style="background:linear-gradient(135deg,#EEF2FF,#E0E7FF)"><div class="tile-icon" style="background:rgba(79,70,229,.12)"><i class="ti ti-checks" style="color:#4F46E5"></i></div><div class="tile-val" style="color:#3730A3" id="h-done">0</div><div class="tile-lbl" style="color:#3730A3">Tasks done</div><div class="tile-sub" style="color:#4F46E5" id="h-left-sub">0 remaining</div></div>
+    <div class="tile" style="background:linear-gradient(135deg,#CCFBF1,#A7F3D0)"><div class="tile-icon" style="background:rgba(15,118,110,.12)"><i class="ti ti-droplet" style="color:#0F766E"></i></div><div class="tile-val" style="color:#065F46" id="h-water">0</div><div class="tile-lbl" style="color:#065F46">Water</div><div class="tile-sub" style="color:#059669" id="h-wsub">Goal: 8</div></div>
+    <div class="tile" style="background:linear-gradient(135deg,#EDE9FE,#DDD6FE)"><div class="tile-icon" style="background:rgba(124,58,237,.12)"><i class="ti ti-moon" style="color:#7C3AED"></i></div><div class="tile-val" style="color:#4C1D95" id="h-sleep">--</div><div class="tile-lbl" style="color:#4C1D95">Sleep hrs</div><div class="tile-sub" style="color:#7C3AED" id="h-ssub">Log in Health</div></div>
+    <div class="tile" style="background:linear-gradient(135deg,#FCE7F3,#FBD0E5)"><div class="tile-icon" style="background:rgba(190,24,93,.12)"><i class="ti ti-calendar-heart" style="color:#BE185D"></i></div><div class="tile-val" style="color:#831843" id="h-period">--</div><div class="tile-lbl" style="color:#831843">Cycle day</div><div class="tile-sub" style="color:#BE185D" id="h-period-sub">View cycle</div></div>
+  </div>
+  <div class="sec"><span class="sec-lbl">Water today</span><span class="sec-act" onclick="go('health')">Health tab</span></div>
+  <div class="grad-card" style="background:linear-gradient(135deg,#0F766E,#0D9488)"><div class="gc-title"><i class="ti ti-droplet"></i><span id="wcnt-h">0 of 8 glasses</span></div><div class="wdots" id="h-wdots"></div><div class="w-btns"><div class="wbtn" onclick="addW()"><i class="ti ti-plus"></i> Log glass</div><div class="wbtn wghost" onclick="resetW()">Reset</div></div></div>
+  <div class="sec"><span class="sec-lbl">Today's tasks</span><span class="sec-act" onclick="go('tasks')">All tasks</span></div>
+  <div class="card" id="dash-tasks"></div>
+  <div class="sec"><span class="sec-lbl">Today's verse</span><span class="sec-act" onclick="go('devotion')">Devotional</span></div>
+  <div class="card card-pad" id="dash-verse"></div>
+  <div class="sec"><span class="sec-lbl">Accountability score</span><span class="sec-act" onclick="go('accountability')">Details</span></div>
+  <div class="card card-pad" style="display:flex;align-items:center;gap:14px" id="dash-score"></div>
+  <div class="sec"><span class="sec-lbl">Bills due</span><span class="sec-act" onclick="go('life')">Manage</span></div>
+  <div class="card" id="dash-bills"></div>
+</div>
+
+<!-- TASKS -->
+<div id="v-tasks" class="hidden">
+  <div style="background:linear-gradient(135deg,#059669,#047857);padding:22px 18px 18px"><div class="page-hero-row"><div><div class="page-hero-title">Tasks</div><div class="page-hero-sub" id="task-sub">Loading...</div></div><div style="display:flex;gap:7px"><button class="page-hero-btn" onclick="togReorderMode()" id="reorder-btn"><i class="ti ti-arrows-sort"></i> Reorder</button><button class="page-hero-btn" onclick="togAdd()" id="add-task-btn">+ Add task</button></div></div></div>
+  <div id="add-form" class="add-form hidden" style="margin-top:12px">
+    <div style="font-size:15px;font-weight:800;color:#0F172A;margin-bottom:12px" id="task-form-title">New task</div>
+    <div class="fl"><label>Task name</label><input class="fi" type="text" id="an" placeholder="What do you need to do?"></div>
+    <div class="g2f"><div class="fl"><label>Category</label><select class="fi" id="ac"><option value="home">Home</option><option value="health">Health</option><option value="spiritual">Spiritual</option><option value="work">Work</option><option value="meal">Meal</option><option value="other">Other</option></select></div><div class="fl"><label>Time</label><input class="fi" type="text" id="atm" placeholder="e.g. 7 AM"></div></div>
+    <div class="g2f"><div class="fl"><label>Priority</label><select class="fi" id="apr"><option value="med">Medium</option><option value="high">High</option><option value="low">Low</option></select></div><div class="fl"><label>Repeat</label><select class="fi" id="arep"><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="none">Once</option></select></div></div>
+    <div class="btn-row"><button class="b-cancel" onclick="togAdd()">Cancel</button><button class="b-save" onclick="saveTask()" id="task-save-btn">Save task</button></div>
+  </div>
+  <div id="reorder-hint" class="hidden" style="margin:10px 16px;padding:10px 14px;background:#ECFDF5;border:1px solid #A7F3D0;border-radius:12px;font-size:12px;font-weight:700;color:#065F46">↕️ Use the arrows to reorder your tasks. Tap "Done" when finished.</div>
+  <div class="fp-row" id="fp-row" style="margin-top:10px"><div class="fp on" data-f="all" onclick="setF('all',this)">All</div><div class="fp" data-f="home" onclick="setF('home',this)">Home</div><div class="fp" data-f="health" onclick="setF('health',this)">Health</div><div class="fp" data-f="spiritual" onclick="setF('spiritual',this)">Spiritual</div><div class="fp" data-f="work" onclick="setF('work',this)">Work</div><div class="fp" data-f="meal" onclick="setF('meal',this)">Meal</div></div>
+  <div class="card" id="tlist" style="overflow:hidden"></div>
+</div>
+
+<!-- DEVOTIONAL -->
+<div id="v-devotion" class="hidden">
+  <div class="devot-hero"><div class="page-hero-title">📖 Devotional</div><div class="page-hero-sub">Your daily one-stop devotional</div><div class="devot-streak-badge"><i class="ti ti-flame"></i><span id="devot-streak-n">0</span> day streak</div></div>
+
+  <div class="reading-card" id="reading-card"></div>
+
+  <div class="sec"><span class="sec-lbl">Browse by how you feel</span></div>
+  <div class="theme-chip-row" id="theme-chips"></div>
+  <div class="theme-results hidden" id="theme-results"></div>
+
+  <div class="sec"><span class="sec-lbl">Reading plans</span></div>
+  <div id="plans-list"></div>
+
+  <div class="sec"><span class="sec-lbl">Morning devotion checklist</span></div>
+  <div class="card" style="overflow:hidden">
+    <div class="checklist-row" onclick="togDevot(0)"><div class="cl-chk" id="dc0"><i class="ti ti-check"></i></div><div class="cl-name">🙏 Opened in prayer</div></div>
+    <div class="checklist-row" onclick="togDevot(1)"><div class="cl-chk" id="dc1"><i class="ti ti-check"></i></div><div class="cl-name">📖 Read today's topic & verse</div></div>
+    <div class="checklist-row" onclick="togDevot(2)"><div class="cl-chk" id="dc2"><i class="ti ti-check"></i></div><div class="cl-name">🌿 Meditated on the message</div></div>
+    <div class="checklist-row" onclick="togDevot(3)"><div class="cl-chk" id="dc3"><i class="ti ti-check"></i></div><div class="cl-name">📝 Wrote a reflection or gratitude</div></div>
+    <div class="checklist-row" onclick="togDevot(4)"><div class="cl-chk" id="dc4"><i class="ti ti-check"></i></div><div class="cl-name">✝️ Closed with the daily prayer</div></div>
+  </div>
+
+  <div class="sec"><span class="sec-lbl">Prayer requests</span></div>
+  <div class="g3" id="prayer-stats" style="margin:0 16px 10px"></div>
+  <div class="life-tabs" style="margin:0 16px 10px">
+    <div class="life-tab on" onclick="setPrayerView('active',this)">🙏 Active</div>
+    <div class="life-tab" onclick="setPrayerView('answered',this)">✨ Answered</div>
+  </div>
+  <div class="cat-pill-row" id="prayer-cat-filter">
+    <div class="cat-pill on" data-c="all" onclick="setPrayerCat('all',this)">All</div>
+    <div class="cat-pill" data-c="health" onclick="setPrayerCat('health',this)">🩺 Health</div>
+    <div class="cat-pill" data-c="family" onclick="setPrayerCat('family',this)">👨‍👩‍👧 Family</div>
+    <div class="cat-pill" data-c="work" onclick="setPrayerCat('work',this)">💼 Work</div>
+    <div class="cat-pill" data-c="relationships" onclick="setPrayerCat('relationships',this)">💗 Relationships</div>
+    <div class="cat-pill" data-c="finances" onclick="setPrayerCat('finances',this)">💰 Finances</div>
+    <div class="cat-pill" data-c="growth" onclick="setPrayerCat('growth',this)">🌱 Growth</div>
+    <div class="cat-pill" data-c="other" onclick="setPrayerCat('other',this)">✨ Other</div>
+  </div>
+  <div class="prayer-log-card" id="prayer-add-card">
+    <textarea class="prayer-inp" id="prayer-inp" rows="2" placeholder="Write a prayer request..."></textarea>
+    <select class="fi" id="prayer-cat-select" style="margin-bottom:8px">
+      <option value="health">🩺 Health</option><option value="family">👨‍👩‍👧 Family</option><option value="work">💼 Work</option><option value="relationships">💗 Relationships</option><option value="finances">💰 Finances</option><option value="growth">🌱 Growth</option><option value="other" selected>✨ Other</option>
+    </select>
+    <button class="prayer-save-btn" onclick="savePrayer()">Add prayer request</button>
+  </div>
+  <div id="prayer-list"></div>
+
+  <div class="sec"><span class="sec-lbl">Devotional journal</span><span class="sec-act" onclick="togJournalView()" id="journal-toggle-lbl">📚 Past entries</span></div>
+  <div class="journal-streak-card" id="journal-streak-card"></div>
+  <div id="memory-card"></div>
+  <div class="ref-card" style="background:#FFFBEB;border-color:#FDE68A">
+    <div class="ref-q" style="color:#92400E" id="journal-prompt">What is God speaking to you today?</div>
+    <textarea class="ref-area" id="devot-notes" style="border-color:#FDE68A;background:#fff" placeholder="Write your reflection..."></textarea>
+    <div class="tag-chip-row" id="journal-tags">
+      <div class="tag-chip" data-t="grateful" onclick="togJTag(this)">🙏 Grateful</div>
+      <div class="tag-chip" data-t="struggling" onclick="togJTag(this)">😔 Struggling</div>
+      <div class="tag-chip" data-t="breakthrough" onclick="togJTag(this)">✨ Breakthrough</div>
+      <div class="tag-chip" data-t="peace" onclick="togJTag(this)">🕊️ Peace</div>
+      <div class="tag-chip" data-t="doubt" onclick="togJTag(this)">🌫️ Doubt</div>
+      <div class="tag-chip" data-t="answered" onclick="togJTag(this)">🎉 Answered prayer</div>
+      <div class="tag-chip" data-t="growth" onclick="togJTag(this)">🌱 Growth</div>
+    </div>
+    <button onclick="saveDevotNotes()" style="width:100%;padding:11px;background:linear-gradient(135deg,#B45309,#D97706);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer">Save entry</button>
+  </div>
+  <div id="journal-past" class="hidden">
+    <div id="journal-stat-line" style="margin:0 16px 8px;font-size:11.5px;color:#92400E;font-weight:700"></div>
+    <input type="text" class="journal-search" id="journal-search" placeholder="🔍 Search your past entries..." oninput="renderJournalPast()">
+    <div class="tag-chip-row" id="journal-filter-tags"></div>
+    <div class="ref-card" id="journal-entries" style="background:#fff"></div>
+  </div>
+</div>
+
+<!-- PERIOD -->
+<div id="v-period" class="hidden">
+  <div class="period-hero">
+    <div class="page-hero-title">🌸 Cycle Tracker</div><div class="page-hero-sub" id="period-hero-sub">Your body, your rhythm</div>
+    <div class="phase-strip" id="phase-strip">
+      <div class="phase-seg" data-ph="Menstrual"><span class="phase-emoji">🩸</span>Period</div>
+      <div class="phase-seg" data-ph="Follicular"><span class="phase-emoji">🌱</span>Follicular</div>
+      <div class="phase-seg" data-ph="Ovulation"><span class="phase-emoji">✨</span>Ovulation</div>
+      <div class="phase-seg" data-ph="Luteal"><span class="phase-emoji">🌙</span>Luteal</div>
+    </div>
+    <div class="period-stats-row"><div class="pstat"><div class="pstat-val" id="ps-day">--</div><div class="pstat-lbl">Cycle day</div></div><div class="pstat-div"></div><div class="pstat"><div class="pstat-val" id="ps-next">--</div><div class="pstat-lbl">Days to next</div></div><div class="pstat-div"></div><div class="pstat"><div class="pstat-val" id="ps-dur">--</div><div class="pstat-lbl">Avg duration</div></div><div class="pstat-div"></div><div class="pstat"><div class="pstat-val" id="ps-len">28d</div><div class="pstat-lbl">Avg cycle</div></div></div>
+  </div>
+
+  <div id="cycle-intro-card" class="card card-pad hidden" style="background:linear-gradient(135deg,#FDF2F8,#FCE7F3);border-color:#FBCFE8">
+    <div style="font-size:14px;font-weight:800;color:#831843;margin-bottom:4px">✨ Let's personalize your cycle</div>
+    <div style="font-size:12px;color:#9D174D;font-weight:600;margin-bottom:10px;line-height:1.5">30 seconds of questions so predictions fit YOU — not a generic 28-day average.</div>
+    <button style="width:100%;padding:11px;background:linear-gradient(135deg,#BE185D,#EC4899);color:#fff;border:none;border-radius:10px;font-size:13px;font-weight:800;cursor:pointer" onclick="togProfileForm()">Start quick setup</button>
+  </div>
+  <div id="profile-form" class="add-form hidden">
+    <div style="font-size:15px;font-weight:800;color:#0F172A;margin-bottom:12px">🌸 Your cycle profile</div>
+    <div class="fl"><label>Your age</label><input class="fi" type="number" min="10" max="60" id="cf-age" placeholder="e.g. 35"></div>
+    <div class="g2f"><div class="fl"><label>Typical cycle length (days)</label><input class="fi" type="number" min="15" max="45" id="cf-cyclen" placeholder="e.g. 28"></div><div class="fl"><label>Typical period length (days)</label><input class="fi" type="number" min="1" max="10" id="cf-perlen" placeholder="e.g. 5"></div></div>
+    <div class="fl"><label>How regular is your cycle?</label><select class="fi" id="cf-reg"><option value="regular">Very regular</option><option value="somewhat">Somewhat regular</option><option value="irregular">Irregular</option><option value="unsure">Not sure yet</option></select></div>
+    <div class="fl"><label>What's your main goal here?</label><select class="fi" id="cf-goal"><option value="track">Just tracking my body</option><option value="ttc">Trying to conceive</option><option value="avoid">Avoiding pregnancy</option><option value="health">Understanding symptoms & health</option></select></div>
+    <div class="btn-row"><button class="b-cancel" onclick="togProfileForm()">Skip for now</button><button class="b-save" onclick="saveProfile()">Save my profile</button></div>
+  </div>
+
+  <div class="vibe-card" id="vibe-card"></div>
+  <div class="card card-pad" id="vibe-meters"></div>
+  <div class="sec" style="padding-top:0"><span class="sec-act" onclick="togProfileForm()">✏️ Edit my cycle profile</span></div>
+
+  <div class="period-btns-row" style="margin-top:4px"><button class="p-btn p-start" onclick="togStartForm()" id="p-start-btn">🩸 Start period</button><button class="p-btn p-end" onclick="togEndForm()" id="p-end-btn"><i class="ti ti-check"></i> End period</button></div>
+  <div id="start-period-form" class="add-form hidden">
+    <div style="font-size:15px;font-weight:800;color:#0F172A;margin-bottom:12px">🩸 When did your period start?</div>
+    <div class="fl"><label>Start date</label><input class="fi" type="date" id="sp-date"></div>
+    <div class="btn-row"><button class="b-cancel" onclick="togStartForm()">Cancel</button><button class="b-save" onclick="confirmStartPeriod()">Confirm start</button></div>
+  </div>
+  <div id="end-period-form" class="add-form hidden">
+    <div style="font-size:15px;font-weight:800;color:#0F172A;margin-bottom:12px">✓ When did it end?</div>
+    <div class="fl"><label>End date</label><input class="fi" type="date" id="ep-date"></div>
+    <div class="btn-row"><button class="b-cancel" onclick="togEndForm()">Cancel</button><button class="b-save" onclick="confirmEndPeriod()">Confirm end</button></div>
+  </div>
+
+  <div class="sec"><span class="sec-lbl">Missed logging a month?</span><span class="sec-act" onclick="togPastForm()">+ Log past period</span></div>
+  <div id="past-form" class="add-form hidden">
+    <div style="font-size:15px;font-weight:800;color:#0F172A;margin-bottom:12px">🗓️ Log a past period</div>
+    <div class="g2f"><div class="fl"><label>Start date</label><input class="fi" type="date" id="pp-start"></div><div class="fl"><label>End date</label><input class="fi" type="date" id="pp-end"></div></div>
+    <div class="btn-row"><button class="b-cancel" onclick="togPastForm()">Cancel</button><button class="b-save" onclick="savePastPeriod()">Save period</button></div>
+  </div>
+
+  <div class="sec">
+    <span class="sec-lbl">Calendar</span>
+    <div style="display:flex;align-items:center;gap:2px">
+      <span class="cal-nav-btn" onclick="changeCalMonth(-1)"><i class="ti ti-chevron-left"></i></span>
+      <span id="period-month-lbl" style="font-size:12px;color:#0F172A;font-weight:800;min-width:96px;text-align:center"></span>
+      <span class="cal-nav-btn" onclick="changeCalMonth(1)"><i class="ti ti-chevron-right"></i></span>
+      <span class="sec-act hidden" id="cal-today-link" onclick="jumpToday()" style="margin-left:4px">Today</span>
+    </div>
+  </div>
+  <div class="period-cal-card">
+    <div class="cal-legend"><span><span class="legend-dot" style="background:linear-gradient(135deg,#BE185D,#EC4899)"></span>Period</span><span><span class="legend-dot" style="background:#CCFBF1;border:1.5px solid #5EEAD4"></span>Fertile</span><span><span class="legend-dot" style="background:linear-gradient(135deg,#F5C842,#FBBF24)"></span>Ovulation</span><span><span class="legend-dot" style="background:#FCE7F3;border:1.5px dashed #EC4899"></span>Predicted</span></div>
+    <div class="pcal" id="period-cal"></div>
+  </div>
+
+  <div class="flow-card"><div class="flow-title">🩸 Flow intensity today</div><div class="flow-pills"><div class="flow-pill" data-fl="light" onclick="setFlow(this,'light')">💧 Light</div><div class="flow-pill" data-fl="medium" onclick="setFlow(this,'medium')">💧💧 Medium</div><div class="flow-pill" data-fl="heavy" onclick="setFlow(this,'heavy')">💧💧💧 Heavy</div><div class="flow-pill" data-fl="none" onclick="setFlow(this,'none')">— None</div></div></div>
+  <div class="flow-card"><div class="flow-title">⚡ Energy today</div><div class="flow-pills"><div class="energy-pill" data-en="low" onclick="setEnergy(this,'low')">😴 Low</div><div class="energy-pill" data-en="mid" onclick="setEnergy(this,'mid')">😐 Mid</div><div class="energy-pill" data-en="high" onclick="setEnergy(this,'high')">⚡ High</div></div></div>
+  <div class="sym-card"><div class="sym-title">Symptoms today</div><div class="sym-grid"><div class="sym-pill" data-s="cramps" onclick="togSym(this)">🔴 Cramps</div><div class="sym-pill" data-s="bloating" onclick="togSym(this)">💧 Bloating</div><div class="sym-pill" data-s="headache" onclick="togSym(this)">🤕 Headache</div><div class="sym-pill" data-s="fatigue" onclick="togSym(this)">😴 Fatigue</div><div class="sym-pill" data-s="mood" onclick="togSym(this)">🎭 Mood swings</div><div class="sym-pill" data-s="spotting" onclick="togSym(this)">🩸 Spotting</div><div class="sym-pill" data-s="backpain" onclick="togSym(this)">🔥 Back pain</div><div class="sym-pill" data-s="tender" onclick="togSym(this)">💗 Tenderness</div><div class="sym-pill" data-s="acne" onclick="togSym(this)">😤 Acne</div><div class="sym-pill" data-s="insomnia" onclick="togSym(this)">🌙 Insomnia</div></div></div>
+
+  <div class="fact-card" id="fact-card"></div>
+
+  <div class="sec"><span class="sec-lbl">Cycle history</span></div>
+  <div class="period-hist-card" id="period-hist"></div>
+</div>
+
+<!-- HEALTH -->
+<div id="v-health" class="hidden">
+  <div style="background:linear-gradient(135deg,#881337,#BE185D,#E11D48);padding:22px 18px 18px"><div class="page-hero-title">Health</div><div class="page-hero-sub">Sleep - water - supplements - movement</div></div>
+  <div class="g2" style="margin-top:10px">
+    <div class="tile" style="background:linear-gradient(135deg,#CCFBF1,#A7F3D0)"><div class="tile-icon" style="background:rgba(15,118,110,.12)"><i class="ti ti-droplet" style="color:#0F766E"></i></div><div class="tile-val" style="color:#065F46" id="h2-water">0</div><div class="tile-lbl" style="color:#065F46">Glasses</div><div class="tile-sub" style="color:#059669" id="h2-wsub">Goal: 8</div></div>
+    <div class="tile" style="background:linear-gradient(135deg,#EDE9FE,#DDD6FE)"><div class="tile-icon" style="background:rgba(124,58,237,.12)"><i class="ti ti-moon" style="color:#7C3AED"></i></div><div class="tile-val" style="color:#4C1D95" id="h2-sleep">--</div><div class="tile-lbl" style="color:#4C1D95">Last night</div><div class="tile-sub" style="color:#7C3AED" id="h2-ssub">7-9 hrs ideal</div></div>
+  </div>
+  <div class="grad-card" style="background:linear-gradient(135deg,#0F766E,#0D9488)"><div class="gc-title"><i class="ti ti-droplet"></i>Water tracker</div><div class="wdots" id="wdots"></div><div class="w-btns"><div class="wbtn" onclick="addW()"><i class="ti ti-plus"></i> Log a glass</div><div class="wbtn wghost" onclick="resetW()">Reset</div></div></div>
+  <div class="grad-card" style="background:linear-gradient(135deg,#4C1D95,#5B21B6)"><div class="gc-title"><i class="ti ti-moon"></i>Sleep tracker - 7 days</div><div class="sleep-inp-row"><input type="number" min="2" max="14" step="0.5" id="sinp" placeholder="Hours slept last night"><button class="slog-btn" style="color:#5B21B6" onclick="logS()">Log</button></div><div class="schart" id="schart"></div><div style="font-size:10px;color:rgba(255,255,255,.45);text-align:center;margin-top:7px;font-weight:700">Green = 7-9 hrs ideal - Red = too little - Amber = too much</div></div>
+  <div class="h-card"><div class="h-sec-title" style="color:#059669"><i class="ti ti-pill" style="color:#059669;font-size:17px"></i>Daily supplements - age 35</div><div id="supplist"></div></div>
+  <div class="h-card"><div class="h-sec-title" style="color:#7C3AED"><i class="ti ti-barbell" style="color:#7C3AED;font-size:17px"></i>Workout today</div><div class="wk-row"><div class="wk-pill" onclick="logWk(this,'Strength')"><i class="ti ti-barbell"></i> Strength</div><div class="wk-pill" onclick="logWk(this,'Cardio')"><i class="ti ti-run"></i> Cardio</div><div class="wk-pill" onclick="logWk(this,'Yoga')"><i class="ti ti-activity"></i> Yoga</div><div class="wk-pill" onclick="logWk(this,'Walk')"><i class="ti ti-walk"></i> Walk</div><div class="wk-pill" onclick="logWk(this,'Rest')"><i class="ti ti-zzz"></i> Rest</div></div></div>
+  <div class="h-card"><div class="h-sec-title" style="color:#0E7490"><i class="ti ti-stethoscope" style="color:#0E7490;font-size:17px"></i>Body reminders</div><div class="tip-row"><div class="tip-ic" style="background:#EFF6FF"><i class="ti ti-eye" style="color:#1D4ED8"></i></div><div><div class="tip-title">20-20-20 eye rule</div><div class="tip-sub">Every 20 min, look 20 ft away for 20 seconds</div></div></div><div class="tip-row"><div class="tip-ic" style="background:#F0FDF4"><i class="ti ti-run" style="color:#15803D"></i></div><div><div class="tip-title">Stretch every 90 min</div><div class="tip-sub">Stand up and move during long work sessions</div></div></div><div class="tip-row"><div class="tip-ic" style="background:#FFF1F2"><i class="ti ti-calendar-check" style="color:#BE123C"></i></div><div><div class="tip-title">Annual physical</div><div class="tip-sub">Book a checkup - critical at 35</div></div></div><div class="tip-row"><div class="tip-ic" style="background:#FFFBEB"><i class="ti ti-dental" style="color:#B45309"></i></div><div><div class="tip-title">Dental checkup</div><div class="tip-sub">Every 6 months without fail</div></div></div></div>
+</div>
+
+<!-- ACCOUNTABILITY -->
+<div id="v-accountability" class="hidden">
+  <div class="acct-hero"><div class="page-hero-title">Accountability</div><div class="page-hero-sub">Hold yourself to your best self</div><div class="score-ring-wrap"><div class="score-ring"><svg viewBox="0 0 140 140"><circle cx="70" cy="70" r="60" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="8"/><circle cx="70" cy="70" r="60" fill="none" stroke="url(#sg)" stroke-width="8" stroke-linecap="round" stroke-dasharray="376.9" id="score-arc" stroke-dashoffset="376.9" transform="rotate(-90 70 70)" style="transition:stroke-dashoffset .8s ease"/><defs><linearGradient id="sg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#F5C842"/><stop offset="100%" style="stop-color:#34D399"/></linearGradient></defs></svg><div class="score-center"><div class="score-num" id="score-big">0</div><div class="score-lbl">out of 100</div></div></div></div></div>
+  <div class="sec"><span class="sec-lbl">Score breakdown</span></div>
+  <div class="score-breakdown" id="score-breakdown"></div>
+  <div class="sec"><span class="sec-lbl">My commitments today</span></div>
+  <div class="commit-card"><textarea class="commit-inp" id="commit-inp" rows="2" placeholder="Write a commitment e.g. I will not skip my workout"></textarea><button class="commit-btn" onclick="addCommit()">+ Add commitment</button><div id="commit-list"></div></div>
+  <div class="sec"><span class="sec-lbl">Notifications</span></div>
+  <div class="card"><div class="notif-toggle" onclick="togNotif()"><div><div style="font-size:14px;font-weight:700;color:#0F172A">Daily reminders</div><div style="font-size:12px;color:#94A3B8;margin-top:2px">Get nudged to stay on track</div></div><div class="toggle-track" id="notif-track"><div class="toggle-thumb"></div></div></div><div style="border-top:1px solid #F1F5F9;padding:12px 16px"><div style="font-size:12px;color:#64748B;font-weight:600;margin-bottom:8px">Reminder times</div><div style="display:flex;gap:8px;flex-wrap:wrap"><div style="padding:6px 12px;border-radius:8px;background:#EEF2FF;color:#4F46E5;font-size:12px;font-weight:700">7:00 AM Morning</div><div style="padding:6px 12px;border-radius:8px;background:#EEF2FF;color:#4F46E5;font-size:12px;font-weight:700">12:00 PM Midday</div><div style="padding:6px 12px;border-radius:8px;background:#EEF2FF;color:#4F46E5;font-size:12px;font-weight:700">9:00 PM Evening</div></div></div></div>
+  <div class="sec"><span class="sec-lbl">Share progress</span></div>
+  <div class="partner-card"><div style="font-size:13px;font-weight:700;color:#0F172A;margin-bottom:8px">Accountability partner</div><input class="partner-inp" type="text" id="partner-name" placeholder="Partner name e.g. Mum, Sarah..." oninput="buildSharePreview()"><div style="display:flex;gap:8px;margin-top:4px"><button class="share-btn" style="background:linear-gradient(135deg,#059669,#047857);color:#fff;flex:1" onclick="shareProgress()"><i class="ti ti-share"></i> Share</button><button class="share-btn" style="background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;flex:1" onclick="shareWhatsApp()"><i class="ti ti-brand-whatsapp"></i> WhatsApp</button></div><div style="margin-top:10px;padding:10px 12px;background:#F0FDF4;border-radius:10px;border:1px solid #BBF7D0;font-size:12px;color:#0F172A;font-weight:600;line-height:1.7" id="share-preview"></div></div>
+  <div class="sec"><span class="sec-lbl">Weekly progress</span></div>
+  <div class="card card-pad"><div style="display:flex;gap:6px;justify-content:space-between" id="weekly-dots"></div><div style="font-size:11px;color:#94A3B8;text-align:center;margin-top:10px;font-weight:600">Gold = 80+ score day</div></div>
+  <div class="sec"><span class="sec-lbl">Your progress this week</span></div>
+  <div class="card card-pad" id="progress-charts"></div>
+</div>
+
+<!-- LIFE -->
+<div id="v-life" class="hidden">
+  <div class="life-hero"><div class="page-hero-title">🏡 Household</div><div class="page-hero-sub">Bills · grocery · home care</div></div>
+  <div class="life-tabs" style="margin-top:10px"><div class="life-tab on" onclick="togLifeTab('bills',this)">Bills</div><div class="life-tab" onclick="togLifeTab('grocery',this)">Grocery</div><div class="life-tab" onclick="togLifeTab('home',this)">Home care</div></div>
+  <div id="lt-bills">
+    <div class="g2"><div class="tile" style="background:linear-gradient(135deg,#D1FAE5,#A7F3D0)"><div class="tile-icon" style="background:rgba(5,150,105,.12)"><i class="ti ti-check" style="color:#059669"></i></div><div class="tile-val" style="color:#064E3B" id="b-paid-n">0</div><div class="tile-lbl" style="color:#065F46">Paid</div><div class="tile-sub" style="color:#059669">This month</div></div><div class="tile" style="background:linear-gradient(135deg,#FEE2E2,#FECACA)"><div class="tile-icon" style="background:rgba(239,68,68,.12)"><i class="ti ti-clock" style="color:#EF4444"></i></div><div class="tile-val" style="color:#7F1D1D" id="b-due-n">0</div><div class="tile-lbl" style="color:#991B1B">Unpaid</div><div class="tile-sub" style="color:#DC2626" id="b-rem-sub">$0 left</div></div></div>
+    <div class="sec"><span class="sec-lbl">All bills - tap to mark paid</span><span class="sec-act" onclick="togBillForm()">+ Add bill</span></div>
+    <div id="bill-form" class="add-form hidden">
+      <div style="font-size:15px;font-weight:800;color:#0F172A;margin-bottom:12px" id="bill-form-title">New bill</div>
+      <div class="fl"><label>Bill name</label><input class="fi" type="text" id="bn-name" placeholder="e.g. Water bill"></div>
+      <div class="g2f"><div class="fl"><label>Amount ($)</label><input class="fi" type="number" step="0.01" id="bn-amt" placeholder="0.00"></div><div class="fl"><label>Due date</label><input class="fi" type="date" id="bn-due"></div></div>
+      <div class="fl"><label>Icon</label><select class="fi" id="bn-icon">
+        <option value="ti-receipt">Receipt (general)</option>
+        <option value="ti-building">Rent / Housing</option>
+        <option value="ti-bolt">Electricity</option>
+        <option value="ti-droplet">Water</option>
+        <option value="ti-wifi">Internet</option>
+        <option value="ti-phone">Phone</option>
+        <option value="ti-device-tv">Streaming</option>
+        <option value="ti-barbell">Gym</option>
+        <option value="ti-shopping-cart">Groceries</option>
+        <option value="ti-car">Car / Insurance</option>
+        <option value="ti-heart">Health / Medical</option>
+        <option value="ti-school">Education</option>
+        <option value="ti-credit-card">Credit card</option>
+      </select></div>
+      <div class="btn-row"><button class="b-cancel" onclick="togBillForm()">Cancel</button><button class="b-save" onclick="saveBillForm()" id="bill-save-btn">Save bill</button></div>
+    </div>
+    <div class="card" id="blist" style="overflow:hidden"></div>
+  </div>
+  <div id="lt-grocery" class="hidden"><div class="sec" style="margin-top:10px"><span class="sec-lbl">Shopping list</span><span class="sec-act" onclick="clearGot()">Clear done</span></div><div class="g-add-row"><input type="text" id="ginp" placeholder="Add an item..." onkeydown="if(event.key==='Enter')addG()"><button class="gadd-btn" onclick="addG()">Add</button></div><div class="card" id="glist" style="overflow:hidden;margin-top:4px"></div></div>
+  <div id="lt-home" class="hidden"><div class="sec" style="margin-top:10px"><span class="sec-lbl">Maintenance schedule</span></div><div class="h-card"><div class="tip-row"><div class="tip-ic" style="background:#F0FDF4"><i class="ti ti-vacuum-cleaner" style="color:#15803D"></i></div><div><div class="tip-title">Weekly</div><div class="tip-sub">Vacuum, mop, change sheets, scrub bathroom</div></div></div><div class="tip-row"><div class="tip-ic" style="background:#FFFBEB"><i class="ti ti-fridge" style="color:#B45309"></i></div><div><div class="tip-title">Bi-weekly</div><div class="tip-sub">Wipe appliances, clean fridge, mirrors</div></div></div><div class="tip-row"><div class="tip-ic" style="background:#FFF1F2"><i class="ti ti-tools" style="color:#BE123C"></i></div><div><div class="tip-title">Monthly</div><div class="tip-sub">Deep clean oven, declutter one room</div></div></div><div class="tip-row"><div class="tip-ic" style="background:#F5F3FF"><i class="ti ti-bell" style="color:#6D28D9"></i></div><div><div class="tip-title">Quarterly</div><div class="tip-sub">Smoke detectors, closet purge, wash windows</div></div></div></div></div>
+</div>
+
+<!-- NAV -->
+<nav class="bnav">
+  <div class="nt on" id="nt-home" onclick="go('home')" style="--nc:#4F46E5;--nb:#EEF2FF"><i class="ti ti-home"></i><span>Home</span></div>
+  <div class="nt" id="nt-tasks" onclick="go('tasks')" style="--nc:#059669;--nb:#D1FAE5"><i class="ti ti-checklist"></i><span>Tasks</span></div>
+  <div class="nt" id="nt-devotion" onclick="go('devotion')" style="--nc:#D97706;--nb:#FEF3C7"><i class="ti ti-bible"></i><span>Devotion</span></div>
+  <div class="nt" id="nt-period" onclick="go('period')" style="--nc:#BE185D;--nb:#FCE7F3"><i class="ti ti-heart"></i><span>Cycle</span></div>
+  <div class="nt" id="nt-health" onclick="go('health')" style="--nc:#7C3AED;--nb:#EDE9FE"><i class="ti ti-activity"></i><span>Health</span></div>
+  <div class="nt" id="nt-accountability" onclick="go('accountability')" style="--nc:#0E7490;--nb:#CFFAFE"><i class="ti ti-trophy"></i><span>Acct.</span></div>
+  <div class="nt" id="nt-life" onclick="go('life')" style="--nc:#312E81;--nb:#E0E7FF"><i class="ti ti-list-check"></i><span>Household</span></div>
+</nav>
+
+<script>
+const CAT={home:{c:'#4F46E5',bg:'#EEF2FF',i:'ti-home',l:'Home'},health:{c:'#BE185D',bg:'#FCE7F3',i:'ti-heart',l:'Health'},spiritual:{c:'#D97706',bg:'#FEF3C7',i:'ti-sun',l:'Spiritual'},work:{c:'#7C3AED',bg:'#EDE9FE',i:'ti-briefcase',l:'Work'},meal:{c:'#0F766E',bg:'#CCFBF1',i:'ti-bowl',l:'Meal'},other:{c:'#64748B',bg:'#F1F5F9',i:'ti-list',l:'Other'}};
+const VERSES=[
+  {ref:'Jeremiah 29:11',text:'For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future.'},
+  {ref:'Philippians 4:13',text:'I can do all this through him who gives me strength.'},
+  {ref:'Psalm 23:1',text:'The Lord is my shepherd, I lack nothing.'},
+  {ref:'Joshua 1:9',text:'Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go.'},
+  {ref:'Proverbs 3:5-6',text:'Trust in the Lord with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight.'},
+  {ref:'Romans 8:28',text:'And we know that in all things God works for the good of those who love him, who have been called according to his purpose.'},
+  {ref:'Psalm 46:1',text:'God is our refuge and strength, an ever-present help in trouble.'},
+  {ref:'Isaiah 40:31',text:'But those who hope in the Lord will renew their strength. They will soar on wings like eagles; they will run and not grow weary, they will walk and not be faint.'},
+  {ref:'Matthew 6:33',text:'But seek first his kingdom and his righteousness, and all these things will be given to you as well.'},
+  {ref:'2 Timothy 1:7',text:'For the Spirit God gave us does not make us timid, but gives us power, love and self-discipline.'},
+  {ref:'Psalm 37:4',text:'Take delight in the Lord, and he will give you the desires of your heart.'},
+  {ref:'Romans 12:2',text:'Do not conform to the pattern of this world, but be transformed by the renewing of your mind.'},
+  {ref:'Psalm 121:1-2',text:'I lift up my eyes to the mountains — where does my help come from? My help comes from the Lord, the Maker of heaven and earth.'},
+  {ref:'Ephesians 3:20',text:'Now to him who is able to do immeasurably more than all we ask or imagine, according to his power that is at work within us.'},
+  {ref:'Lamentations 3:22-23',text:'Because of the Lord\'s great love we are not consumed, for his compassions never fail. They are new every morning; great is your faithfulness.'},
+  {ref:'Matthew 11:28',text:'Come to me, all you who are weary and burdened, and I will give you rest.'},
+  {ref:'Philippians 4:6-7',text:'Do not be anxious about anything, but in every situation, by prayer and petition, with thanksgiving, present your requests to God.'},
+  {ref:'Psalm 91:1-2',text:'Whoever dwells in the shelter of the Most High will rest in the shadow of the Almighty. I will say of the Lord, He is my refuge and my fortress, my God, in whom I trust.'},
+  {ref:'John 3:16',text:'For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.'},
+  {ref:'Isaiah 41:10',text:'So do not fear, for I am with you; do not be dismayed, for I am your God. I will strengthen you and help you; I will uphold you with my righteous right hand.'},
+  {ref:'Psalm 139:14',text:'I praise you because I am fearfully and wonderfully made; your works are wonderful, I know that full well.'},
+  {ref:'Galatians 5:22-23',text:'But the fruit of the Spirit is love, joy, peace, forbearance, kindness, goodness, faithfulness, gentleness and self-control.'},
+  {ref:'1 John 4:4',text:'You, dear children, are from God and have overcome them, because the one who is in you is greater than the one who is in the world.'},
+  {ref:'Psalm 34:8',text:'Taste and see that the Lord is good; blessed is the one who takes refuge in him.'},
+  {ref:'Romans 15:13',text:'May the God of hope fill you with all joy and peace as you trust in him, so that you may overflow with hope by the power of the Holy Spirit.'},
+  {ref:'Nehemiah 8:10',text:'Do not grieve, for the joy of the Lord is your strength.'},
+  {ref:'Psalm 27:1',text:'The Lord is my light and my salvation — whom shall I fear? The Lord is the stronghold of my life — of whom shall I be afraid?'},
+  {ref:'2 Corinthians 12:9',text:'But he said to me, My grace is sufficient for you, for my power is made perfect in weakness.'},
+  {ref:'Revelation 21:4',text:'He will wipe every tear from their eyes. There will be no more death or mourning or crying or pain, for the old order of things has passed away.'},
+  {ref:'John 14:27',text:'Peace I leave with you; my peace I give you. I do not give to you as the world gives. Do not let your hearts be troubled and do not be afraid.'},
+  {ref:'Deuteronomy 31:8',text:'The Lord himself goes before you and will be with you; he will never leave you nor forsake you. Do not be afraid; do not be discouraged.'}
+];
+const DEVOS=[
+  {topic:'Trusting God in Uncertainty',emoji:'⚓',theme:'Trust',verseRef:'Proverbs 3:5-6',verseText:'Trust in the Lord with all your heart and lean not on your own understanding; in all your ways submit to him, and he will make your paths straight.',reading:'Uncertainty has a way of making us grip tightly to our own plans. But this verse invites something different — a full-hearted trust that doesn\'t require having all the answers first. Trusting God isn\'t about pretending you understand everything; it\'s about choosing to lean on Him even when the path ahead is unclear. Today, wherever you feel unsteady, you can hand that uncertainty over instead of carrying it alone.',prayer:'Lord, I don\'t always understand what\'s ahead, but I choose to trust You today. Quiet my anxious thoughts and straighten my path. Help me lean on You instead of my own limited understanding. Amen.'},
+  {topic:'Finding Rest When You\'re Weary',emoji:'🌙',theme:'Rest',verseRef:'Matthew 11:28-29',verseText:'Come to me, all you who are weary and burdened, and I will give you rest. Take my yoke upon you and learn from me, for I am gentle and humble in heart, and you will find rest for your souls.',reading:'Rest isn\'t a luxury you have to earn — it\'s an invitation. Jesus doesn\'t say "come to me once you\'ve got it all figured out." He says come now, weary and burdened exactly as you are. If you\'ve been running on empty, this is permission to stop striving for a moment and simply receive rest for your soul, not just your schedule.',prayer:'Jesus, I\'m tired in ways rest alone can\'t always fix. Thank You for inviting me to come as I am. Give my soul true rest today, and teach me to walk at Your gentle pace instead of my own exhausting one. Amen.'},
+  {topic:'Overcoming Fear and Anxiety',emoji:'🦁',theme:'Fear',verseRef:'Isaiah 41:10',verseText:'So do not fear, for I am with you; do not be dismayed, for I am your God. I will strengthen you and help you; I will uphold you with my righteous right hand.',reading:'Fear often convinces us we\'re facing things alone. This verse pushes back on that lie directly — three times God says "I," reminding us that His presence isn\'t distant or occasional, it\'s active and near. Whatever is unsettling you today, you\'re not asked to be fearless on your own strength. You\'re invited to be steadied by a God who is holding on to you.',prayer:'Father, my fears feel loud today, but Your promise is louder. Thank You for being near, not far off. Strengthen me where I feel weak, and hold me steady when anxious thoughts try to take over. Amen.'},
+  {topic:'A Heart of Gratitude',emoji:'🙌',theme:'Gratitude',verseRef:'1 Thessalonians 5:18',verseText:'Give thanks in all circumstances; for this is God\'s will for you in Christ Jesus.',reading:'Notice this doesn\'t say give thanks FOR all circumstances — some things genuinely aren\'t good. It says give thanks IN them, which means gratitude can coexist with hard seasons. Practicing thankfulness, even for small things, has a way of shifting our posture from scarcity to abundance. What\'s one thing, however small, you can thank God for today?',prayer:'God, thank You for the good in my life today, even the small things I overlook. Grow a grateful heart in me — not one that ignores hardship, but one that still finds reasons to give thanks in the middle of it. Amen.'},
+  {topic:'God\'s Peace in the Storm',emoji:'🕊️',theme:'Peace',verseRef:'John 14:27',verseText:'Peace I leave with you; my peace I give you. I do not give to you as the world gives. Do not let your hearts be troubled and do not be afraid.',reading:'The peace the world offers usually depends on circumstances lining up — calm only when things are calm. But the peace Jesus offers is different; it\'s available even in the middle of the storm, not just after it passes. If your heart feels troubled today, this verse is an invitation to receive a peace that doesn\'t require your situation to change first.',prayer:'Lord, my circumstances aren\'t always peaceful, but You said Your peace isn\'t like the world\'s. Settle my troubled heart today. Help me hold on to Your peace even while the storm is still happening around me. Amen.'},
+  {topic:'Walking in Purpose',emoji:'🧭',theme:'Purpose',verseRef:'Jeremiah 29:11',verseText:'For I know the plans I have for you, declares the Lord, plans to prosper you and not to harm you, plans to give you hope and a future.',reading:'It\'s easy to feel like you\'re drifting, especially when the current season doesn\'t make sense yet. This verse reminds us that even when we can\'t see the plan, God can. Your life isn\'t a random collection of days — it\'s being shaped with intention, even the parts that feel like waiting rooms. Purpose doesn\'t always announce itself loudly; sometimes it unfolds quietly, one faithful day at a time.',prayer:'Father, I don\'t always see the plan for my life clearly, but I trust that You do. Give me hope for the future You\'re preparing, and help me walk faithfully through today, trusting the bigger picture is in Your hands. Amen.'},
+  {topic:'Strength for the Weary',emoji:'🦅',theme:'Strength',verseRef:'Isaiah 40:31',verseText:'But those who hope in the Lord will renew their strength. They will soar on wings like eagles; they will run and not grow weary, they will walk and not be faint.',reading:'Strength, in this verse, isn\'t something you manufacture through sheer willpower — it\'s renewed by hoping in God. There\'s a rhythm here: soaring seasons, running seasons, and simply walking-without-fainting seasons. All three count. If today feels more like a walking day than a soaring one, that\'s still strength being renewed, just quietly.',prayer:'Lord, some days I feel like I can barely walk, let alone soar. Renew my strength as I put my hope in You. Whether today is a soaring day or a slow, walking day, help me not grow faint. Amen.'},
+  {topic:'The Power of Forgiveness',emoji:'🤝',theme:'Forgiveness',verseRef:'Ephesians 4:32',verseText:'Be kind and compassionate to one another, forgiving each other, just as in Christ God forgave you.',reading:'Forgiveness is rarely easy, and this verse doesn\'t pretend otherwise — it simply roots our forgiveness of others in the forgiveness we\'ve already received. That doesn\'t mean forgiveness happens instantly or that hurt disappears overnight. It means you\'re not forgiving from an empty well; you\'re drawing from a well that\'s already been filled for you.',prayer:'God, forgiveness is hard, especially when the hurt still feels fresh. Help me extend the same grace You\'ve shown me, even imperfectly, even slowly. Soften my heart where it has grown hard toward someone today. Amen.'},
+  {topic:'Choosing Joy',emoji:'😊',theme:'Joy',verseRef:'Nehemiah 8:10',verseText:'Do not grieve, for the joy of the Lord is your strength.',reading:'Joy here isn\'t framed as a fleeting emotion dependent on a good day — it\'s framed as a source of strength. That reframes things: joy isn\'t just what happens when life goes well, it\'s something that can fuel you through the hard parts too. Choosing joy today doesn\'t mean denying what\'s difficult; it means refusing to let difficulty have the final word.',prayer:'Lord, some days joy feels far away, but You say Your joy is my strength. Help me choose joy today, not because everything is easy, but because You are good regardless of my circumstances. Amen.'},
+  {topic:'Patience in Waiting',emoji:'⏳',theme:'Patience',verseRef:'Psalm 27:14',verseText:'Wait for the Lord; be strong and take heart and wait for the Lord.',reading:'Notice the repetition — "wait for the Lord" bookends this verse, as if the writer knew we\'d need the reminder twice. Waiting is one of the hardest spiritual disciplines because it feels like nothing is happening. But waiting on God isn\'t passive; it\'s an active posture of trust that says "I believe You\'re working even when I can\'t see it yet."',prayer:'Father, waiting is hard, especially when I don\'t know how long it will last. Give me strength and courage while I wait on You. Help me trust that You are working, even in the silence and the delay. Amen.'},
+  {topic:'Rooted in God\'s Love',emoji:'💗',theme:'Love',verseRef:'Romans 8:38-39',verseText:'Neither death nor life, neither angels nor demons, neither the present nor the future, nor any powers, neither height nor depth, nor anything else in all creation, will be able to separate us from the love of God.',reading:'This is one of the most sweeping declarations in Scripture — an exhaustive list designed to leave nothing out. Life, death, powers, height, depth, anything else — all of it is named and ruled out. Whatever has made you feel unlovable or distant from God today, this verse says plainly: that thing does not have the power to separate you from His love.',prayer:'God, thank You that nothing I\'m facing today can separate me from Your love — not my mistakes, not my circumstances, not my doubts. Help me rest secure in a love that never lets go of me. Amen.'},
+  {topic:'Courage to Move Forward',emoji:'🛡️',theme:'Courage',verseRef:'Joshua 1:9',verseText:'Have I not commanded you? Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go.',reading:'Courage in this verse isn\'t the absence of fear — it\'s moving forward anyway, because of a promise: God\'s presence goes with you wherever you go. Not just in the comfortable places, but wherever. If there\'s a step forward you\'ve been avoiding out of fear, this verse offers the same charge given to Joshua: be strong, and don\'t face it alone.',prayer:'Lord, give me courage for the step I\'ve been avoiding. Thank You that You go with me wherever I go — I don\'t have to face today\'s challenge alone. Strengthen me to move forward instead of staying stuck in fear. Amen.'},
+  {topic:'Contentment in All Circumstances',emoji:'🌾',theme:'Contentment',verseRef:'Philippians 4:11-13',verseText:'I have learned to be content whatever the circumstances. I know what it is to be in need, and I know what it is to have plenty. I can do all this through him who gives me strength.',reading:'Notice the word "learned" — contentment wasn\'t automatic for Paul either. It was a practice built over time, through both plenty and need. This verse is often quoted out of context as a promise of achievement, but it\'s really about learning to be steady no matter what your circumstances look like, drawing strength from Christ rather than your situation.',prayer:'Lord, teach me contentment the way Paul learned it — not overnight, but through practice and trust. Whether I have plenty or feel in need today, let my strength come from You, not my circumstances. Amen.'},
+  {topic:'Healing for a Broken Heart',emoji:'💔',theme:'Healing',verseRef:'Psalm 34:18',verseText:'The Lord is close to the brokenhearted and saves those who are crushed in spirit.',reading:'This verse doesn\'t promise instant healing or explain away pain — it promises nearness. When your spirit feels crushed, God doesn\'t stand at a distance waiting for you to feel better first. He draws close specifically in the brokenness. If your heart is heavy today, you don\'t have to pretend otherwise to be near to God — brokenness is actually where He meets you.',prayer:'Lord, my heart feels heavy today, and I don\'t have to hide that from You. Thank You for drawing close to the brokenhearted. Meet me in this pain, and begin the slow work of healing in Your time. Amen.'},
+  {topic:'Wisdom for Decisions',emoji:'🔑',theme:'Guidance',verseRef:'James 1:5',verseText:'If any of you lacks wisdom, you should ask God, who gives generously to all without finding fault, and it will be given to you.',reading:'There\'s no fine print here, no minimum requirement to meet first. If you lack wisdom, simply ask — generously, without judgment, is how it\'s given. Decision fatigue is real, and it\'s tempting to think you have to figure everything out on your own. This verse offers a simpler path: bring your uncertainty honestly to God and ask.',prayer:'Father, I need wisdom for the decision in front of me. Thank You for promising to give it generously, without finding fault in my asking. Guide my thinking and my choices today, and give me clarity where I feel unsure. Amen.'},
+  {topic:'Hope That Doesn\'t Disappoint',emoji:'🌈',theme:'Hope',verseRef:'Romans 15:13',verseText:'May the God of hope fill you with all joy and peace as you trust in him, so that you may overflow with hope by the power of the Holy Spirit.',reading:'Hope, joy, and peace are linked together here, all flowing from trust rather than certainty about outcomes. This isn\'t wishful thinking or forced positivity — it\'s hope with a source, sustained by the Holy Spirit rather than your own optimism. Even in a season where hope feels thin, this verse says it can be refilled, not manufactured by you but given by God.',prayer:'God of hope, fill me with joy and peace as I trust in You today. Where my hope feels thin or worn out, refill it by Your Spirit. Let hope overflow in me, not because my situation is certain, but because You are faithful. Amen.'},
+  {topic:'Renewed Every Morning',emoji:'🌅',theme:'Comfort',verseRef:'Lamentations 3:22-23',verseText:'Because of the Lord\'s great love we are not consumed, for his compassions never fail. They are new every morning; great is your faithfulness.',reading:'This verse comes from a book largely about grief and loss — which makes its message even more striking. Even in the middle of deep sorrow, the writer finds a reason for hope: mercy that resets every single morning. Yesterday\'s failures, yesterday\'s exhaustion, yesterday\'s mistakes don\'t have to define today. God\'s compassion arrives fresh, right on time, every morning.',prayer:'Lord, thank You that Your mercies are new this morning, no matter what yesterday looked like. I don\'t have to carry yesterday\'s weight into today. Thank You for Your great faithfulness, fresh again right now. Amen.'},
+  {topic:'Casting Your Cares',emoji:'🎗️',theme:'Comfort',verseRef:'1 Peter 5:7',verseText:'Cast all your anxiety on him because he cares for you.',reading:'The word "cast" implies an active, deliberate motion — not gently setting worry down, but throwing it. This isn\'t a passive suggestion to "try not to worry"; it\'s an invitation to actively hand your anxiety over to someone who genuinely cares about carrying it. What\'s one specific worry you\'re holding onto right now that you could consciously cast onto God today?',prayer:'Father, I\'m holding onto worries that were never meant to be carried alone. I cast them onto You now, trusting that You care for me. Take what I hand over, and give me a lighter heart in return. Amen.'},
+  {topic:'Being Still',emoji:'🧘',theme:'Peace',verseRef:'Psalm 46:10',verseText:'Be still, and know that I am God; I will be exalted among the nations, I will be exalted in the earth.',reading:'Stillness doesn\'t come naturally in a busy life — it has to be chosen. This verse links being still with knowing God, suggesting that some things about His character are best understood not through striving or noise, but through quiet. Today might be a good day to simply pause for a few minutes, put the phone down, and let stillness be an act of trust rather than an inconvenience.',prayer:'Lord, my life is often loud and rushed. Help me be still today, even just for a few minutes, and know that You are God. In the quiet, remind me that You are exalted over everything I\'m facing. Amen.'},
+  {topic:'New Beginnings',emoji:'🌱',theme:'Purpose',verseRef:'2 Corinthians 5:17',verseText:'Therefore, if anyone is in Christ, the new creation has come: The old has gone, the new is here!',reading:'New beginnings can feel intimidating, especially if the past still feels close. But this verse speaks of transformation, not just improvement — old things gone, new things genuinely here. Whatever chapter you\'re starting or closing today, you\'re not required to drag the old version of yourself into it. There\'s room for a real fresh start, not just a slightly better rerun.',prayer:'Lord, thank You for making all things new in Christ. Help me release what\'s behind me and step into today as a genuinely new beginning, not just a repeat of old patterns. Give me courage to walk forward differently. Amen.'},
+  {topic:'Overcoming Loneliness',emoji:'🫂',theme:'Comfort',verseRef:'Deuteronomy 31:6',verseText:'Be strong and courageous. Do not be afraid or terrified because of them, for the Lord your God goes with you; he will never leave you nor forsake you.',reading:'Loneliness can creep in even when you\'re surrounded by people, and it can feel like proof that you\'ve been forgotten. This verse says the opposite is true — God\'s presence isn\'t occasional, it\'s constant, and it doesn\'t depend on how connected you feel to others in a given moment. You\'re invited to let His nearness be real, even on the quiet, isolated days.',prayer:'Lord, loneliness feels heavy today. Thank You for the promise that You never leave me, even when I feel forgotten by everyone else. Remind me of Your presence, and if it\'s Your will, bring people into my life who reflect Your love. Amen.'},
+  {topic:'Dealing with Anger',emoji:'🔥',theme:'Self-control',verseRef:'James 1:19-20',verseText:'Everyone should be quick to listen, slow to speak and slow to become angry, because human anger does not produce the righteousness that God wants.',reading:'Anger itself isn\'t condemned here — being "slow" to it is the goal, not never feeling it at all. This verse offers a practical order of operations: listen first, speak second, anger last if at all. If something has stirred up frustration in you today, this is an invitation to pause before reacting, giving yourself room to respond instead of just explode.',prayer:'Father, my anger sometimes moves faster than my wisdom. Help me be quick to listen and slow to speak today. Where frustration is rising in me, give me the self-control to pause before I react. Amen.'},
+  {topic:'The Value of Humility',emoji:'🙇',theme:'Humility',verseRef:'Micah 6:8',verseText:'He has shown you, O mortal, what is good. And what does the Lord require of you? To act justly and to love mercy and to walk humbly with your God.',reading:'Humility here isn\'t about thinking less of yourself — it\'s about walking rightly sized next to God, neither puffed up nor crushed down. Paired with justice and mercy, humility becomes something active, not passive. It shapes how you treat people, how you handle being wrong, and how you carry your own successes without needing to prove anything.',prayer:'Lord, teach me to walk humbly with You today. Keep me from pride when things go well and from despair when they don\'t. Help humility shape how I treat the people around me. Amen.'},
+  {topic:'Generosity That Multiplies',emoji:'🌻',theme:'Generosity',verseRef:'2 Corinthians 9:6-7',verseText:'Whoever sows sparingly will also reap sparingly, and whoever sows generously will also reap generously... for God loves a cheerful giver.',reading:'Generosity here isn\'t framed as a transaction where you give in order to get more back — it\'s about the posture of your heart. A cheerful giver isn\'t guilted or pressured into giving; they give freely because they trust there\'s more than enough to go around. Whether it\'s money, time, or attention, generosity tends to open something in us that scarcity thinking keeps closed.',prayer:'Lord, grow a cheerful, generous heart in me. Help me hold what I have loosely, trusting that You are the source of everything, not my own careful hoarding. Show me one way to give generously today. Amen.'},
+  {topic:'Perseverance Through Trials',emoji:'🏔️',theme:'Perseverance',verseRef:'James 1:2-4',verseText:'Consider it pure joy, my brothers and sisters, whenever you face trials of many kinds, because you know that the testing of your faith produces perseverance.',reading:'Nobody naturally feels joyful about trials — this verse isn\'t asking you to fake happiness about hard things. It\'s pointing to something deeper: trials, endured well, build a kind of endurance that ease never could. If you\'re in the middle of something difficult right now, this isn\'t wasted time. Something in you is being strengthened, even if it doesn\'t feel like it yet.',prayer:'Father, this trial is hard, and I don\'t always feel joy in it. But I trust that You are producing something lasting in me through it. Give me the endurance to keep going, and help me see what\'s being built in me along the way. Amen.'},
+  {topic:'Faithfulness in Small Things',emoji:'🔑',theme:'Faithfulness',verseRef:'Luke 16:10',verseText:'Whoever can be trusted with very little can also be trusted with much, and whoever is dishonest with very little will also be dishonest with much.',reading:'It\'s tempting to save your best effort for the "big" moments and coast through the small, unnoticed ones. But this verse suggests the opposite pattern is more accurate — how you handle the small, unglamorous things reveals and shapes how you\'ll handle the bigger ones. Faithfulness today in something small isn\'t wasted; it\'s practice for what\'s coming.',prayer:'Lord, help me be faithful in the small, unseen parts of my day, not just the moments others notice. Build trustworthiness in me through the ordinary tasks in front of me right now. Amen.'},
+  {topic:'Living with Integrity',emoji:'🧭',theme:'Integrity',verseRef:'Proverbs 10:9',verseText:'Whoever walks in integrity walks securely, but whoever takes crooked paths will be found out.',reading:'Integrity is essentially the alignment between who you are in public and who you are when no one\'s watching. This verse links integrity to security — there\'s a steadiness that comes from not having to manage two different versions of yourself. Cutting corners might feel easier short-term, but this verse suggests it costs you a kind of peace that a straight path protects.',prayer:'Lord, help me walk in integrity today, in the choices no one sees as much as the ones everyone does. Let there be no gap between who I am in private and who I present in public. Amen.'},
+  {topic:'A Compassionate Heart',emoji:'💞',theme:'Compassion',verseRef:'Colossians 3:12',verseText:'Therefore, as God\'s chosen people, holy and dearly loved, clothe yourselves with compassion, kindness, humility, gentleness and patience.',reading:'"Clothe yourselves" is an intentional image — compassion isn\'t something that just happens to you, it\'s something you deliberately put on, the way you\'d choose an outfit. Some days kindness comes easily; other days it takes real effort. Either way, this verse frames compassion as a daily choice rooted in already being loved, not something you have to earn the right to extend.',prayer:'Father, clothe me with compassion today, especially toward the people who are hardest to be patient with. Remind me that I extend kindness because I\'ve already received Yours, not because anyone has earned it. Amen.'},
+  {topic:'Building Strong Relationships',emoji:'🤍',theme:'Love',verseRef:'Ecclesiastes 4:9-10',verseText:'Two are better than one, because they have a good return for their labor: If either of them falls down, one can help the other up.',reading:'This verse celebrates something simple but easy to forget — you weren\'t designed to carry everything alone. Whether it\'s a friendship, a partnership, or family, good relationships exist partly so there\'s someone to help you up when you stumble. If you\'ve been trying to do life solo, this is a nudge to let someone closer in.',prayer:'Lord, thank You for the people You\'ve placed in my life. Help me be someone who shows up for others, and help me also let people show up for me instead of carrying everything alone. Amen.'},
+  {topic:'Parenting and Guiding Others with Grace',emoji:'🌼',theme:'Family',verseRef:'Proverbs 22:6',verseText:'Start children off on the way they should go, and even when they are old they will not turn from it.',reading:'Whether it\'s raising children, mentoring, or simply influencing someone younger in your life, this verse speaks to the long game — the seeds planted now may not show fruit for years. It\'s easy to feel like the effort isn\'t landing in the moment, but formation is slow work. Patience and consistency today are investments in someone\'s future, even when you can\'t see the outcome yet.',prayer:'Lord, give me patience and wisdom as I guide the people You\'ve placed under my care or influence. Help me plant good seeds today, trusting You with the long-term harvest I may not get to see right away. Amen.'},
+  {topic:'Finding Your Calling',emoji:'🎯',theme:'Purpose',verseRef:'Ephesians 2:10',verseText:'For we are God\'s handiwork, created in Christ Jesus to do good works, which God prepared in advance for us to do.',reading:'This verse says the good works you\'re meant to do weren\'t left up to chance or your own guesswork — they were prepared in advance. That takes some of the pressure off "finding" your purpose as if it\'s hidden and hard to locate. It also means the ordinary, faithful things you\'re already doing may be exactly the good work you were made for, not just a placeholder until something bigger comes along.',prayer:'Father, thank You for preparing good work for me in advance. Help me stop striving to invent my own purpose and instead notice what You\'ve already placed in front of me today. Amen.'},
+  {topic:'Wise Financial Stewardship',emoji:'🪙',theme:'Guidance',verseRef:'Proverbs 21:20',verseText:'The wise store up choice food and olive oil, but fools gulp theirs down.',reading:'This proverb isn\'t really about food — it\'s about restraint versus impulse. Wisdom, here, looks like planning ahead and exercising a little delayed gratification, while foolishness looks like consuming everything now without thought for later. Whatever "storing up" looks like for you today — money, energy, time — this verse nudges toward thoughtful stewardship over impulsive spending.',prayer:'Lord, give me wisdom with what You\'ve entrusted to me — my money, my time, my energy. Help me practice restraint instead of impulse, and steward what I have with a view toward the future, not just today. Amen.'},
+  {topic:'Resisting Temptation',emoji:'🚪',theme:'Strength',verseRef:'1 Corinthians 10:13',verseText:'No temptation has overtaken you except what is common to mankind. And God is faithful; he will not let you be tempted beyond what you can bear. But when you are tempted, he will also provide a way out.',reading:'Two comforting truths sit side by side here: your struggle isn\'t unique or shameful, and there\'s always a way out, even when it doesn\'t feel like it in the moment. Temptation can make you feel isolated, like no one else deals with what you\'re facing. This verse says otherwise — you\'re not alone, and you\'re not without an exit, even if you have to look for it.',prayer:'Father, when temptation feels overwhelming, remind me that You always provide a way out. Help me have the clarity to see it and the courage to take it instead of giving in. Amen.'},
+  {topic:'Walking Through Doubt',emoji:'🌫️',theme:'Trust',verseRef:'Mark 9:24',verseText:'Immediately the boy\'s father exclaimed, "I do believe; help me overcome my unbelief!"',reading:'This is one of the most honest prayers in Scripture — belief and doubt held in the same breath, without one canceling out the other. Faith doesn\'t require the absence of doubt; sometimes it looks exactly like this father\'s cry, asking for help with the parts that still struggle to believe. If you\'re wrestling with doubt today, you\'re in good, honest company.',prayer:'Lord, I believe, but help my unbelief. I don\'t have to have it all figured out to bring my doubts honestly to You. Meet me in the tension between faith and uncertainty today. Amen.'},
+  {topic:'Grieving with Hope',emoji:'🕯️',theme:'Comfort',verseRef:'1 Thessalonians 4:13',verseText:'Brothers and sisters, we do not want you to be uninformed about those who sleep in death, so that you do not grieve like the rest of mankind, who have no hope.',reading:'This verse doesn\'t tell you not to grieve — it draws a distinction between grieving with hope and grieving without it. Loss is still loss, and sorrow is still real, even for people of deep faith. But grief doesn\'t have to be the final word here; there\'s a difference between sitting in sorrow that has nowhere to go and sorrow that\'s held alongside hope.',prayer:'Lord, my grief is real, and I don\'t want to pretend otherwise. But I bring it to You knowing it isn\'t hopeless grief. Comfort me today, and let hope hold space alongside my sorrow, not replace it. Amen.'},
+  {topic:'Embracing Change',emoji:'🌊',theme:'Purpose',verseRef:'Isaiah 43:19',verseText:'See, I am doing a new thing! Now it springs up; do you not perceive it? I am making a way in the wilderness and streams in the wasteland.',reading:'Change can feel disorienting, especially when it\'s not what you chose. But this verse frames God as actively at work even in wilderness seasons — not absent, not idle, but making a way where there doesn\'t seem to be one. If you\'re in a season of unwanted or uncertain change, the invitation here is to look for what\'s springing up, even if it\'s small and easy to miss.',prayer:'Lord, this season of change feels disorienting. Help me perceive what You\'re doing, even in the wilderness parts. Make a way where I can\'t see one, and give me eyes to notice the new thing springing up. Amen.'},
+  {topic:'Your Identity in Christ',emoji:'🪞',theme:'Love',verseRef:'Galatians 2:20',verseText:'I have been crucified with Christ and I no longer live, but Christ lives in me. The life I still live in the body, I live by faith in the Son of God, who loved me.',reading:'Identity is one of the most contested battlegrounds of daily life — what defines you, what you perform for, what you\'re afraid of losing. This verse offers a different foundation: an identity rooted not in achievement or approval, but in being loved. Whatever labels the world has tried to stick on you today, this verse quietly insists there\'s a truer one underneath.',prayer:'Lord, help me root my identity in who You say I am, not in performance, approval, or fear of failure. Thank You for loving me first, before I did anything to earn it. Let that truth settle my heart today. Amen.'},
+  {topic:'Standing Firm Spiritually',emoji:'🛡️',theme:'Courage',verseRef:'Ephesians 6:10-11',verseText:'Finally, be strong in the Lord and in his mighty power. Put on the full armor of God, so that you can take your stand against the devil\'s schemes.',reading:'This verse assumes a real, ongoing struggle — it doesn\'t pretend the spiritual life is passive or automatic. But the strength required isn\'t generated from you alone; it\'s "in the Lord," borrowed rather than manufactured. If you feel spiritually depleted or under attack in some way today, this is a reminder that standing firm doesn\'t require you to be strong on your own.',prayer:'Lord, I want to stand firm today, but I know my own strength runs out. Clothe me in Your strength instead of mine. Protect my heart and mind from whatever schemes are working against me. Amen.'},
+  {topic:'The Power of Prayer',emoji:'🕊️',theme:'Peace',verseRef:'James 5:16',verseText:'Therefore confess your sins to each other and pray for each other so that you may be healed. The prayer of a righteous person is powerful and effective.',reading:'Prayer here isn\'t just a private habit — it\'s tied to community, confession, and healing together. There\'s something vulnerable about praying with someone else, admitting you don\'t have it all together. This verse suggests that vulnerability, paired with prayer, carries real power, not just personal comfort but effective change.',prayer:'Lord, teach me to pray honestly, both alone and with others. Where I\'ve been carrying something in isolation, give me courage to bring it into the light. Thank You that prayer is powerful, not just symbolic. Amen.'},
+  {topic:'Worship in the Ordinary',emoji:'🎶',theme:'Joy',verseRef:'Psalm 100:1-2',verseText:'Shout for joy to the Lord, all the earth. Worship the Lord with gladness; come before him with joyful songs.',reading:'Worship is sometimes reserved in our minds for special moments — a beautiful sunset, a powerful song, a mountaintop experience. But this verse invites worship into the everyday, gladness as a daily posture rather than an occasional peak. What would it look like to bring joyful worship into an ordinary Tuesday, not just the extraordinary days?',prayer:'Lord, I don\'t want to save worship only for the big moments. Help me bring joyful gladness into this ordinary day, in small ways — a grateful thought, a moment of stillness, a quiet thank You. Amen.'},
+  {topic:'Living in Community',emoji:'👥',theme:'Love',verseRef:'Hebrews 10:24-25',verseText:'And let us consider how we may spur one another on toward love and good deeds, not giving up meeting together, as some are in the habit of doing.',reading:'Isolation is easy to drift into, especially when life gets busy or hard. This verse pushes against that drift, framing community not as optional but as something that actively spurs growth. Meeting together isn\'t just about socializing — it\'s about people who encourage you toward becoming more loving, not less, especially when you\'d rather withdraw.',prayer:'Lord, keep me from isolating myself when life gets hard. Help me stay connected to people who spur me toward love and good deeds, even when meeting up feels like effort. Amen.'},
+  {topic:'Serving Others',emoji:'🤲',theme:'Compassion',verseRef:'Galatians 5:13',verseText:'You, my brothers and sisters, were called to be free. But do not use your freedom to indulge the flesh; rather, serve one another humbly in love.',reading:'Freedom, in this verse, isn\'t framed as permission to focus entirely on yourself — it\'s framed as room to serve others without resentment or obligation. There\'s a difference between serving because you feel forced to and serving because love genuinely leads you there. Where in your life today could freedom look like humbly showing up for someone else?',prayer:'Lord, thank You for the freedom I have in You. Help me use that freedom to serve others in love, not to indulge only myself. Show me one person I can humbly serve today. Amen.'},
+  {topic:'Leaving a Legacy',emoji:'🌳',theme:'Purpose',verseRef:'Psalm 78:4',verseText:'We will not hide them from their descendants; we will tell the next generation the praiseworthy deeds of the Lord, his power, and the wonders he has done.',reading:'Legacy isn\'t only about what you leave behind materially — it\'s about what you pass down in story, faith, and character. This verse frames remembering and retelling as an act of stewardship for the next generation, not just nostalgia. What story of God\'s faithfulness in your own life is worth passing on to someone younger than you?',prayer:'Lord, help me be mindful of the legacy I\'m building, not just for myself but for those who come after me. Give me opportunities to tell the story of Your faithfulness in my life to someone who needs to hear it. Amen.'},
+  {topic:'Wisdom Over Folly',emoji:'💡',theme:'Guidance',verseRef:'Proverbs 4:7',verseText:'The beginning of wisdom is this: Get wisdom. Though it cost all you have, get understanding.',reading:'This verse treats wisdom as worth real sacrifice, not something you stumble into by accident. It\'s almost jarring — "though it cost all you have" — because wisdom is rarely free; it often comes through humility, correction, and hard experience. If gaining wisdom today costs you something, whether pride or comfort, this verse says that price is worth paying.',prayer:'Lord, give me wisdom, even if it costs me comfort or pride to receive it. Help me value understanding over being right, and teach me through whatever means You choose today. Amen.'},
+  {topic:'Battling Comparison',emoji:'🪟',theme:'Contentment',verseRef:'Galatians 6:4',verseText:'Each one should test their own actions. Then they can take pride in themselves alone, without comparing themselves to someone else.',reading:'Comparison quietly steals contentment, whether it\'s about looks, success, relationships, or spiritual growth. This verse redirects the measuring stick — test your own actions against your own calling, not against someone else\'s highlight reel. Freedom from comparison doesn\'t mean you stop growing; it means you stop measuring your worth by someone else\'s race.',prayer:'Lord, free me from comparing my life to everyone else\'s. Help me evaluate my own steps honestly, without the constant noise of measuring myself against other people. Let my contentment come from You, not from ranking myself against others. Amen.'},
+  {topic:'Overcoming Shame',emoji:'🌤️',theme:'Healing',verseRef:'Romans 8:1',verseText:'Therefore, there is now no condemnation for those who are in Christ Jesus.',reading:'Shame has a way of replaying old failures on a loop, insisting you\'re still defined by them. This verse draws a firm line against that loop — no condemnation, not "eventually" or "once you\'ve proven yourself," but now. Shame often outlives its usefulness, holding onto guilt long after forgiveness has already been offered. Today can be the day you let that loop stop playing.',prayer:'Lord, thank You that there is no condemnation for me in Christ. Where shame keeps replaying old mistakes, help me release them and receive the freedom You\'ve already given. Amen.'},
+  {topic:'Living Generously with Time',emoji:'⏰',theme:'Generosity',verseRef:'Galatians 6:9-10',verseText:'Let us not become weary in doing good, for at the proper time we will reap a harvest if we do not give up. Therefore, as we have opportunity, let us do good to all people.',reading:'Generosity isn\'t only about money — time is one of the hardest things to give away because it\'s finite and can\'t be replaced. This verse acknowledges the weariness that comes with continually doing good without seeing immediate results. But it also promises a harvest, in due time, for those who don\'t give up. Your patient generosity with time isn\'t wasted, even when it feels invisible.',prayer:'Lord, I get weary doing good sometimes, especially when it feels unnoticed. Renew my strength to keep giving my time and attention generously, trusting You with the harvest and its timing. Amen.'},
+  {topic:'Anchored in God\'s Word',emoji:'⚓',theme:'Guidance',verseRef:'Psalm 119:105',verseText:'Your word is a lamp for my feet, a light on my path.',reading:'A lamp for the feet doesn\'t illuminate the whole journey at once — it lights up just enough for the next step. That\'s often how guidance works: not a floodlight revealing your entire future, but enough light for right now. If you\'re anxious about not seeing the whole path clearly, this verse offers permission to simply take the next visible step.',prayer:'Lord, I don\'t need to see the whole road today, just the next step. Let Your word light my path enough to keep moving forward, even when the bigger picture stays unclear. Amen.'},
+  {topic:'A Thankful Spirit in Hard Seasons',emoji:'🌾',theme:'Gratitude',verseRef:'Habakkuk 3:17-18',verseText:'Though the fig tree does not bud and there are no grapes on the vines... yet I will rejoice in the Lord, I will be joyful in God my Savior.',reading:'This is gratitude at its most tested — not thanksgiving for abundance, but rejoicing in the middle of genuine lack. The prophet names real losses honestly before choosing joy anyway, which makes this verse feel less like denial and more like defiant hope. Gratitude in a hard season doesn\'t require pretending things are fine; it requires choosing God even when they aren\'t.',prayer:'Lord, even when things aren\'t going well, I choose to rejoice in You. My circumstances don\'t define my joy — You do. Help me hold onto that truth in this hard season. Amen.'},
+  {topic:'Renewed Hope for Tomorrow',emoji:'🌄',theme:'Hope',verseRef:'Psalm 30:5',verseText:'Weeping may stay for the night, but rejoicing comes in the morning.',reading:'This verse doesn\'t rush past the weeping — it acknowledges the night is real and can genuinely last. But it also insists the night isn\'t permanent. Whatever weeping season you\'re in, morning is a promise, not a guarantee that it comes on your preferred timeline, but a certainty that it comes. Hope for tomorrow doesn\'t erase tonight\'s sorrow; it simply refuses to let tonight have the final word.',prayer:'Lord, tonight feels heavy, but I hold onto Your promise that rejoicing comes in the morning. Give me hope for tomorrow, even while I\'m still in the weeping. Amen.'}
+];
+const PLANS=[
+  {id:'peace7',title:'7 Days of Peace',emoji:'🕊️',desc:'A week of Scripture to quiet an anxious heart.',days:[4,18,1,16,17,10,15]},
+  {id:'fear7',title:'7 Days Overcoming Fear',emoji:'🦁',desc:'Face what scares you with Scripture as your anchor.',days:[2,11,6,0,15,3,8]},
+  {id:'grat5',title:'5 Days of Gratitude',emoji:'🙌',desc:'Retrain your heart to notice the good.',days:[3,8,10,16,19]},
+  {id:'trust7',title:'7 Days of Trusting God',emoji:'⚓',desc:'Learn to lean on Him instead of your own understanding.',days:[0,14,5,19,9,6,15]}
+];
+const REFLECT=['What is God speaking to you today?','What area of your life needs more trust?','What are you most grateful for right now?','Where did you see God\'s hand today?','What habit do you want to build this week?','How can you show kindness to someone tomorrow?','What burden can you surrender to God tonight?'];
+const VIBE={
+  Menstrual:{emoji:'🩸',title:'Rest & Restore',tag:'Your period is here',tip:'Stay hydrated, keep warm, and be gentle with yourself today. Rest is productive too. 💗',grad:'linear-gradient(135deg,#831843,#BE185D)'},
+  Follicular:{emoji:'🌱',title:'Energy Rising',tag:'Follicular phase',tip:'Estrogen is climbing — a great window for new projects, workouts, and fresh starts. ✨',grad:'linear-gradient(135deg,#065F46,#059669)'},
+  Ovulation:{emoji:'✨',title:'Peak Glow',tag:'Fertile window',tip:'You may feel more confident, social, and radiant. This is your most fertile stretch. 🌟',grad:'linear-gradient(135deg,#B45309,#F59E0B)'},
+  Luteal:{emoji:'🌙',title:'Wind Down',tag:'Luteal phase',tip:'Energy may dip and cravings may rise. Prioritize rest, comfort, and gentle self-care. 🍵',grad:'linear-gradient(135deg,#4C1D95,#7C3AED)'}
+};
+const METERS={
+  Menstrual:{social:30,workout:35,skin:55,social_lbl:'Low-key',workout_lbl:'Go gentle',skin_lbl:'Sensitive'},
+  Follicular:{social:75,workout:88,skin:80,social_lbl:'Rising',workout_lbl:'Great for training',skin_lbl:'Glowing'},
+  Ovulation:{social:95,workout:80,skin:92,social_lbl:'Peak',workout_lbl:'Strong & confident',skin_lbl:'Radiant'},
+  Luteal:{social:45,workout:55,skin:50,social_lbl:'Winding down',workout_lbl:'Moderate',skin_lbl:'Might break out'}
+};
+const FACTS=[
+  'Your cycle length can naturally vary by a few days each month — that\'s completely normal.',
+  'The average cycle is 28 days, but anywhere from 21 to 35 days is considered healthy.',
+  'Ovulation usually happens about 14 days before your next period starts, not 14 days after the last one.',
+  'Your fertile window is about 6 days long — the 5 days before ovulation plus ovulation day itself.',
+  'Cervical mucus often becomes clear and stretchy (like egg white) right before ovulation.',
+  'Basal body temperature rises slightly after ovulation and stays up until your next period.',
+  'Cramps happen because your uterus contracts to help shed its lining — it\'s hard work!',
+  'Estrogen peaks right before ovulation, which is often linked to a boost in mood and energy.',
+  'Progesterone rises after ovulation and can bring on that "wind down" luteal feeling.',
+  'Tracking your cycle for 3+ months gives much more accurate predictions than a single month.',
+  'Stress, travel, and sleep changes can all shift your ovulation date — your body is always adapting.',
+  'PMS symptoms usually show up in the week before your period, during the luteal phase.',
+  'Iron-rich foods can help replenish what\'s lost during your period — think leafy greens and lentils.',
+  'Light movement like walking or stretching can actually ease period cramps for many people.',
+  'Your skin, appetite, and even sense of smell can shift across your cycle — you\'re not imagining it!',
+  'Logging symptoms over time helps you spot your own unique patterns, not just textbook averages.'
+];
+
+function ls(k,d){try{const v=localStorage.getItem(k);return v!=null?JSON.parse(v):d;}catch{return d;}}
+function ss(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
+
+// STATE
+let tasks=ls('hub_t',[{id:1,name:'Pray',cat:'spiritual',time:'6:30 AM',priority:'high',repeat:'daily',done:false},{id:2,name:'Read your Bible',cat:'spiritual',time:'6:45 AM',priority:'high',repeat:'daily',done:false},{id:3,name:'Make breakfast',cat:'meal',time:'7:00 AM',priority:'med',repeat:'daily',done:false},{id:4,name:'Workout 30 min',cat:'health',time:'7:30 AM',priority:'high',repeat:'daily',done:false},{id:5,name:'Take supplements',cat:'health',time:'8:00 AM',priority:'med',repeat:'daily',done:false},{id:6,name:'Deep work block',cat:'work',time:'9:00 AM',priority:'high',repeat:'daily',done:false},{id:7,name:'Drink 8 glasses of water',cat:'health',time:'',priority:'med',repeat:'daily',done:false},{id:8,name:'Do the laundry',cat:'home',time:'10:00 AM',priority:'med',repeat:'weekly',done:false},{id:9,name:'Take the trash out',cat:'home',time:'8:00 AM',priority:'med',repeat:'weekly',done:false},{id:10,name:'Dinner time',cat:'meal',time:'6:30 PM',priority:'med',repeat:'daily',done:false},{id:11,name:'Tidy up the home',cat:'home',time:'8:00 PM',priority:'low',repeat:'daily',done:false},{id:12,name:'Wind down no screens',cat:'other',time:'9:30 PM',priority:'med',repeat:'daily',done:false}]);
+let water=ls('hub_w',0);
+let sleepLog=ls('hub_sl',[]);
+let supps=ls('hub_sp',[{n:'Vitamin D3',t:'Morning',done:false},{n:'Magnesium',t:'Evening',done:false},{n:'Omega-3',t:'Morning',done:false},{n:'Multivitamin',t:'Morning',done:false},{n:'Vitamin C',t:'Anytime',done:false}]);
+let mood=ls('hub_m',0),streak=ls('hub_str',0),sessions=ls('hub_ses',0);
+let grocery=ls('hub_g',['Eggs','Chicken breast','Brown rice','Spinach','Bananas','Greek yogurt','Oats','Olive oil','Garlic','Sweet potatoes','Almonds','Salmon'].map(n=>({n,got:false})));
+let bills=ls('hub_b',[{n:'Rent',a:1200,due:'1st',paid:false,ic:'ti-building'},{n:'Electricity',a:80,due:'15th',paid:false,ic:'ti-bolt'},{n:'Internet',a:60,due:'20th',paid:true,ic:'ti-wifi'},{n:'Phone bill',a:50,due:'22nd',paid:false,ic:'ti-phone'},{n:'Netflix',a:22,due:'28th',paid:true,ic:'ti-device-tv'},{n:'Gym membership',a:45,due:'5th',paid:false,ic:'ti-barbell'},{n:'Grocery budget',a:300,due:'Monthly',paid:false,ic:'ti-shopping-cart'},{n:'Car insurance',a:120,due:'10th',paid:false,ic:'ti-car'}]);
+let period=ls('hub_p',{cycles:[],active:null,symptoms:{},flow:{},energy:{}});
+if(!period.energy)period.energy={};
+if(!period.profile)period.profile={done:false};
+let calViewYear=new Date().getFullYear(),calViewMonth=new Date().getMonth();
+let prayers=ls('hub_pr',[]);
+let devotChecks=ls('hub_dc',{});
+let devotNotes=ls('hub_dn',{});
+let devotPlans=ls('hub_dpl',{});
+let prayerCatFilter='all',journalTagFilter=null,journalOpen=false;
+let currentReading={mode:'today'};
+let selectedJTags=[];
+let refs=ls('hub_r',{});
+let commits=ls('hub_co',[]);
+let notifOn=ls('hub_notif',false);
+let weeklyScores=ls('hub_ws',[]);
+let nid=ls('hub_nid',100),curF='all',addOpen=false;
+let taskHistory=ls('hub_th',{}),waterHistory=ls('hub_wh',{}),moodHistory=ls('hub_mh',{}),billHistory=ls('hub_bh',{});
+let lastActiveDate=ls('hub_lad',null),lastActiveMonth=ls('hub_lam',null);
+let prayerViewMode='active';
+let reorderMode=false,taskEditId=null;
+let tsecs=25*60,ttot=25*60,trun=false,tint=null,tbrk=false;
+
+function save(){ss('hub_t',tasks);ss('hub_w',water);ss('hub_sl',sleepLog);ss('hub_sp',supps);ss('hub_m',mood);ss('hub_str',streak);ss('hub_ses',sessions);ss('hub_g',grocery);ss('hub_b',bills);ss('hub_p',period);ss('hub_pr',prayers);ss('hub_dc',devotChecks);ss('hub_dn',devotNotes);ss('hub_dpl',devotPlans);ss('hub_r',refs);ss('hub_co',commits);ss('hub_notif',notifOn);ss('hub_ws',weeklyScores);ss('hub_nid',nid);ss('hub_th',taskHistory);ss('hub_wh',waterHistory);ss('hub_mh',moodHistory);ss('hub_bh',billHistory);ss('hub_lad',lastActiveDate);ss('hub_lam',lastActiveMonth);}
+function checkDailyReset(){
+  const today=new Date().toDateString();
+  if(lastActiveDate===today)return;
+  if(lastActiveDate){
+    taskHistory[lastActiveDate]={done:tasks.filter(t=>t.done).length,total:tasks.length};
+    waterHistory[lastActiveDate]=water;
+    if(mood)moodHistory[lastActiveDate]=mood;
+  }
+  tasks.forEach(t=>{if(t.repeat==='daily')t.done=false;});
+  if(new Date().getDay()===1){tasks.forEach(t=>{if(t.repeat==='weekly')t.done=false;});}
+  water=0;mood=0;
+  lastActiveDate=today;
+  save();
+}
+function checkMonthlyReset(){
+  const d=new Date();
+  const monthKey=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0');
+  if(lastActiveMonth===monthKey)return;
+  if(lastActiveMonth){
+    billHistory[lastActiveMonth]={paid:bills.filter(b=>b.paid).length,total:bills.length,names:bills.filter(b=>b.paid).map(b=>b.n)};
+    bills.forEach(b=>{b.paid=false;});
+  }
+  lastActiveMonth=monthKey;
+  save();
+}
+function todayDevotChecks(){const k=new Date().toDateString();if(!devotChecks[k])devotChecks[k]=[false,false,false,false,false];return devotChecks[k];}
+function computeDevotStreak(){let streak=0;let d=new Date();const todayKey=new Date().toDateString();for(let i=0;i<400;i++){const key=d.toDateString();const arr=devotChecks[key];const done=arr&&arr.filter(Boolean).length>=3;if(done){streak++;d.setDate(d.getDate()-1);}else if(key===todayKey){d.setDate(d.getDate()-1);}else break;}return streak;}
+function dayOfYear(d){const start=new Date(d.getFullYear(),0,0);return Math.floor((d-start)/86400000);}
+function todayDevo(){return DEVOS[dayOfYear(new Date())%DEVOS.length];}
+
+let toastT;
+function showT(t,s){document.getElementById('tt').textContent=t;document.getElementById('ts').textContent=s||'';document.getElementById('toast').classList.remove('hidden');clearTimeout(toastT);toastT=setTimeout(hideT,3500);}
+function hideT(){document.getElementById('toast').classList.add('hidden');}
+
+// NAVIGATION
+function go(v){
+  ['home','tasks','devotion','period','health','accountability','life'].forEach(n=>{
+    const el=document.getElementById('v-'+n);
+    el.classList.toggle('hidden',n!==v);
+    const nt=document.getElementById('nt-'+n);if(nt)nt.classList.toggle('on',n===v);
+  });
+  const activeEl=document.getElementById('v-'+v);
+  activeEl.classList.remove('view-active');void activeEl.offsetWidth;activeEl.classList.add('view-active');
+  if(v==='home')renderHome();
+  if(v==='tasks')renderTasksPage();
+  if(v==='devotion')renderDevotion();
+  if(v==='period')renderPeriod();
+  if(v==='health')renderHealth();
+  if(v==='accountability')renderAccountability();
+  if(v==='life'){renderBills();renderGrocery();}
+  window.scrollTo(0,0);
+}
+
+// SCORE
+function calcScore(){
+  const done=tasks.filter(t=>t.done).length,tot=tasks.length;
+  const taskPts=tot?Math.round(done/tot*30):0;
+  const waterPts=Math.round(Math.min(water/8,1)*15);
+  const lastSleep=sleepLog.length?sleepLog[sleepLog.length-1]:0;
+  const sleepPts=lastSleep>=7&&lastSleep<=9?15:lastSleep>=6?8:lastSleep>0?4:0;
+  const devotPts=todayDevotChecks().filter(Boolean).length>=3?20:todayDevotChecks().filter(Boolean).length*5;
+  const suppPts=supps.length&&supps.every(s=>s.done)?10:0;
+  const wkPts=document.querySelector&&document.querySelector('.wk-pill.on')?10:0;
+  return{total:Math.min(taskPts+waterPts+sleepPts+devotPts+suppPts+wkPts,100),taskPts,waterPts,sleepPts,devotPts,suppPts,wkPts};
+}
+
+// HOME
+function renderHome(){
+  const h=new Date().getHours();
+  document.getElementById('greet-sub').textContent=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
+  document.getElementById('dstr').textContent=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  document.getElementById('stn').textContent=streak;
+  const done=tasks.filter(t=>t.done).length,tot=tasks.length,pct=tot?Math.round(done/tot*100):0;
+  document.getElementById('pfill').style.width=pct+'%';
+  document.getElementById('pct').textContent=pct+'%';
+  document.getElementById('hs-done').textContent=done;
+  document.getElementById('hs-left').textContent=tot-done;
+  const sc=calcScore();
+  document.getElementById('hs-score').textContent=sc.total;
+  document.getElementById('hs-water').textContent=water+'/8';
+  document.getElementById('h-done').textContent=done;
+  document.getElementById('h-left-sub').textContent=(tot-done)+' remaining';
+  document.getElementById('h-water').textContent=water;
+  document.getElementById('h-wsub').textContent=water>=8?'Goal reached!':'Goal: 8 glasses';
+  const ls2=sleepLog.length?sleepLog[sleepLog.length-1]:null;
+  document.getElementById('h-sleep').textContent=ls2?ls2.toFixed(1)+' h':'--';
+  document.getElementById('h-ssub').textContent=ls2?(ls2>=7&&ls2<=9?'Great':'Too little or much'):'Log in Health';
+  const lastStart=period.active?period.active.start:(period.cycles.length?period.cycles[0].start:null);
+  if(lastStart){const diff=Math.floor((new Date()-new Date(lastStart))/86400000)+1;document.getElementById('h-period').textContent=diff;document.getElementById('h-period-sub').textContent=period.active?'Period active':'Day of cycle';}
+  document.querySelectorAll('.mood-btn').forEach(m=>m.classList.toggle('on',parseInt(m.dataset.m)===mood));
+  document.getElementById('wcnt-h').textContent=water+' of 8 glasses';
+  document.getElementById('h-wdots').innerHTML=Array.from({length:8},(_,i)=>'<div class="wd'+(i<water?' on':'')+'" onclick="addW()"><i class="ti ti-droplet"></i></div>').join('');
+  const sorted=[...tasks.filter(t=>!t.done),...tasks.filter(t=>t.done)].slice(0,5);
+  document.getElementById('dash-tasks').innerHTML=sorted.length?sorted.map(t=>{const cat=CAT[t.cat]||CAT.other;return'<div class="dash-task'+(t.done?' done':'')+'" onclick="togTask('+t.id+')"><div class="sm-chk'+(t.done?' on':'')+'"><i class="ti ti-check"></i></div><div style="flex:1;min-width:0"><div class="dt-n">'+t.name+'</div><div style="display:flex;gap:5px;margin-top:2px"><span style="font-size:10px;padding:1px 6px;border-radius:6px;background:'+cat.bg+';color:'+cat.c+';font-weight:700">'+cat.l+'</span></div></div>'+(t.time?'<div class="dt-time">'+t.time+'</div>':'')+'</div>';}).join(''):'<div style="padding:18px;text-align:center;color:#94A3B8;font-size:13px;font-weight:600">All done! Great work today.</div>';
+  const v=todayDevo();
+  document.getElementById('dash-verse').innerHTML='<div style="font-size:11px;font-weight:800;color:#D97706;margin-bottom:6px">'+v.emoji+' '+v.topic+' · '+v.verseRef+'</div><div style="font-size:13px;color:#0F172A;font-style:italic;line-height:1.6;border-left:3px solid #F5C842;padding-left:10px">'+v.verseText.substring(0,130)+(v.verseText.length>130?'...':'')+'</div>';
+  document.getElementById('dash-score').innerHTML='<div style="width:58px;height:58px;border-radius:50%;background:linear-gradient(135deg,#F5C842,#34D399);display:flex;align-items:center;justify-content:center;flex-shrink:0"><span style="font-size:20px;font-weight:800;color:#fff">'+sc.total+'</span></div><div><div style="font-size:14px;font-weight:800;color:#0F172A">'+(sc.total>=80?'Excellent! 🏆':sc.total>=60?'Good progress 👍':sc.total>=40?'Keep going 💪':'Room to grow 🌱')+'</div><div style="font-size:12px;color:#94A3B8;margin-top:2px;font-weight:600">Accountability score today</div><div style="font-size:12px;color:#0E7490;font-weight:700;margin-top:4px;cursor:pointer" onclick="go(\'accountability\')">View breakdown</div></div>';
+  const unpaid=bills.filter(b=>!b.paid).slice(0,3);const dayN=new Date().getDate();
+  document.getElementById('dash-bills').innerHTML=unpaid.length?unpaid.map(b=>{const dN=parseInt(b.due)||0;const soon=dN&&Math.abs(dN-dayN)<=5;return'<div class="qrow" onclick="go(\'life\')"><div class="qrow-ic" style="background:'+(soon?'#FEF3C7':'#FEE2E2')+'"><i class="ti '+b.ic+'" style="color:'+(soon?'#D97706':'#DC2626')+'"></i></div><div><div class="qrow-name">'+b.n+'</div><div class="qrow-sub">Due '+b.due+'</div></div><div style="text-align:right"><div style="font-size:14px;font-weight:800;color:#0F172A">$'+b.a+'</div><div style="font-size:10px;padding:2px 7px;border-radius:12px;background:'+(soon?'#FEF3C7':'#FEE2E2')+';color:'+(soon?'#92400E':'#991B1B')+';font-weight:800;margin-top:2px">'+(soon?'Due soon':'Unpaid')+'</div></div></div>';}).join(''):'<div style="padding:16px;text-align:center;color:#059669;font-size:13px;font-weight:800">All bills paid this month!</div>';
+}
+function setMood(m){mood=m;save();document.querySelectorAll('.mood-btn').forEach(x=>x.classList.toggle('on',parseInt(x.dataset.m)===m));showT('Mood logged',['','Hang in there.','Tomorrow is a new day.','Steady going.','Great to hear!','You are thriving!'][m]);}
+function addW(){if(water<8)water++;save();renderHome();if(!document.getElementById('v-health').classList.contains('hidden'))renderHealth();if(water===8)showT('Hydration goal!','8 glasses today. Well done.');else showT('Water logged',water+' of 8 glasses.');}
+function resetW(){water=0;save();renderHome();if(!document.getElementById('v-health').classList.contains('hidden'))renderHealth();}
+function togTask(id){const t=tasks.find(x=>x.id===id);if(!t)return;t.done=!t.done;if(t.done&&tasks.every(x=>x.done)){streak++;save();showT('All tasks done!','Streak: '+streak+' days');}else if(t.done)showT(t.name,'Done! Keep going!');save();renderHome();if(!document.getElementById('v-tasks').classList.contains('hidden'))renderTasksPage();}
+
+// TASKS
+function renderTasksPage(){
+  const done=tasks.filter(t=>t.done).length,tot=tasks.length;
+  document.getElementById('task-sub').textContent=reorderMode?'Drag with arrows to reorder':done+' of '+tot+' done today';
+  const filtered=curF==='all'?tasks:tasks.filter(t=>t.cat===curF);
+  const el=document.getElementById('tlist');
+  if(!filtered.length){el.innerHTML='<div style="padding:24px;text-align:center;color:#94A3B8;font-size:13px;font-weight:600">No tasks here yet.</div>';return;}
+  if(reorderMode){
+    el.innerHTML=filtered.map((t,i)=>{
+      const globalIdx=tasks.findIndex(x=>x.id===t.id);
+      const upDis=globalIdx<=0?' style="opacity:.3;pointer-events:none"':'';
+      const downDis=globalIdx>=tasks.length-1?' style="opacity:.3;pointer-events:none"':'';
+      return '<div class="task-item"><div style="display:flex;align-items:center;gap:10px;flex:1;min-width:0"><i class="ti ti-grip-vertical" style="color:#CBD5E1;font-size:17px"></i><div class="ti-name" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'+t.name+'</div></div><div style="display:flex;flex-shrink:0"><span class="ti-action-btn" onclick="moveTaskUp('+t.id+')"'+upDis+'><i class="ti ti-chevron-up"></i></span><span class="ti-action-btn" onclick="moveTaskDown('+t.id+')"'+downDis+'><i class="ti ti-chevron-down"></i></span></div></div>';
+    }).join('');
+    return;
+  }
+  el.innerHTML=filtered.map(t=>{const cat=CAT[t.cat]||CAT.other;const pbg=t.priority==='high'?'#FEE2E2':t.priority==='low'?'#D1FAE5':'#FEF3C7';const ptx=t.priority==='high'?'#991B1B':t.priority==='low'?'#065F46':'#92400E';return'<div class="task-item'+(t.done?' done':'')+'"><div onclick="togTask('+t.id+')" style="display:flex;align-items:center;gap:12px;flex:1;min-width:0;cursor:pointer"><div class="big-chk'+(t.done?' on':'')+'"><i class="ti ti-check"></i></div><div style="flex:1;min-width:0"><div class="ti-name">'+t.name+'</div><div style="display:flex;flex-wrap:wrap;gap:4px;align-items:center"><span class="ti-chip" style="background:'+cat.bg+';color:'+cat.c+'"><i class="ti '+cat.i+'" style="font-size:10px"></i>'+cat.l+'</span><span class="ti-chip" style="background:'+pbg+';color:'+ptx+'">'+t.priority+'</span>'+(t.time?'<span class="ti-time"><i class="ti ti-clock" style="font-size:10px"></i>'+t.time+'</span>':'')+'</div></div></div><div style="display:flex;flex-shrink:0"><span class="ti-action-btn" onclick="event.stopPropagation();editTask('+t.id+')"><i class="ti ti-pencil"></i></span><span class="ti-action-btn" onclick="event.stopPropagation();deleteTask('+t.id+')" style="color:#FCA5A5"><i class="ti ti-trash"></i></span></div></div>';}).join('');
+}
+function setF(f,el){curF=f;document.querySelectorAll('.fp').forEach(p=>p.classList.remove('on'));el.classList.add('on');renderTasksPage();}
+function togAdd(){
+  addOpen=!addOpen;
+  if(addOpen&&taskEditId===null){document.getElementById('task-form-title').textContent='New task';document.getElementById('task-save-btn').textContent='Save task';document.getElementById('an').value='';document.getElementById('atm').value='';document.getElementById('ac').value='home';document.getElementById('apr').value='med';document.getElementById('arep').value='daily';}
+  if(!addOpen)taskEditId=null;
+  document.getElementById('add-form').classList.toggle('hidden',!addOpen);
+  if(addOpen)setTimeout(()=>document.getElementById('an').focus(),80);
+}
+function editTask(id){
+  const t=tasks.find(x=>x.id===id);if(!t)return;
+  taskEditId=id;addOpen=true;
+  document.getElementById('task-form-title').textContent='Edit task';
+  document.getElementById('task-save-btn').textContent='Update task';
+  document.getElementById('an').value=t.name;
+  document.getElementById('ac').value=t.cat;
+  document.getElementById('atm').value=t.time||'';
+  document.getElementById('apr').value=t.priority;
+  document.getElementById('arep').value=t.repeat;
+  document.getElementById('add-form').classList.remove('hidden');
+  document.getElementById('add-form').scrollIntoView({behavior:'smooth',block:'center'});
+}
+function deleteTask(id){const t=tasks.find(x=>x.id===id);if(!t)return;tasks=tasks.filter(x=>x.id!==id);save();renderTasksPage();showT('Task deleted',t.name+' removed.');}
+function saveTask(){
+  const n=document.getElementById('an').value.trim();if(!n)return;
+  const cat=document.getElementById('ac').value,time=document.getElementById('atm').value.trim(),priority=document.getElementById('apr').value,repeat=document.getElementById('arep').value;
+  if(taskEditId!==null){
+    const t=tasks.find(x=>x.id===taskEditId);
+    if(t){t.name=n;t.cat=cat;t.time=time;t.priority=priority;t.repeat=repeat;}
+    taskEditId=null;
+    save();togAdd();renderTasksPage();showT('Task updated!',n);
+  }else{
+    tasks.push({id:nid++,name:n,cat,time,priority,repeat,done:false});
+    save();togAdd();renderTasksPage();showT('Task added!',n);
+  }
+}
+function togReorderMode(){
+  reorderMode=!reorderMode;
+  const btn=document.getElementById('reorder-btn');
+  btn.innerHTML=reorderMode?'<i class="ti ti-check"></i> Done':'<i class="ti ti-arrows-sort"></i> Reorder';
+  document.getElementById('reorder-hint').classList.toggle('hidden',!reorderMode);
+  document.getElementById('fp-row').classList.toggle('hidden',reorderMode);
+  document.getElementById('add-task-btn').classList.toggle('hidden',reorderMode);
+  if(reorderMode){curF='all';document.querySelectorAll('.fp').forEach(p=>p.classList.toggle('on',p.dataset.f==='all'));if(addOpen)togAdd();}
+  renderTasksPage();
+}
+function moveTaskUp(id){const i=tasks.findIndex(x=>x.id===id);if(i<=0)return;[tasks[i-1],tasks[i]]=[tasks[i],tasks[i-1]];save();renderTasksPage();}
+function moveTaskDown(id){const i=tasks.findIndex(x=>x.id===id);if(i<0||i>=tasks.length-1)return;[tasks[i+1],tasks[i]]=[tasks[i],tasks[i+1]];save();renderTasksPage();}
+
+
+// DEVOTIONAL
+function renderDevotion(){
+  document.getElementById('devot-streak-n').textContent=computeDevotStreak();
+  renderReadingCard();
+  renderThemeChips();
+  renderPlans();
+  const checks=todayDevotChecks();
+  for(let i=0;i<5;i++){const el=document.getElementById('dc'+i);el.classList.toggle('on',checks[i]);el.innerHTML=checks[i]?'<i class="ti ti-check"></i>':'';}
+  renderPrayerStats();
+  renderPrayers();
+  const todayStr=new Date().toDateString();
+  const entry=devotNotes[todayStr];
+  const hasEntryToday=entry&&(typeof entry==='string'?entry.trim():(entry.text||'').trim());
+  document.getElementById('devot-notes').value=entry?(typeof entry==='string'?entry:entry.text):'';
+  selectedJTags=entry&&typeof entry==='object'?[...(entry.tags||[])]:[];
+  document.querySelectorAll('#journal-tags .tag-chip').forEach(c=>c.classList.toggle('on',selectedJTags.includes(c.dataset.t)));
+  const jStreak=computeJournalStreak();
+  document.getElementById('journal-streak-card').innerHTML='<div style="width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.22);display:flex;align-items:center;justify-content:center;font-size:18px">🔥</div><div><div style="font-size:15px;font-weight:800">'+jStreak+' day journal streak</div><div style="font-size:11px;opacity:.85;font-weight:600">'+(jStreak>0?'Keep the momentum going!':'Write today to start your streak')+'</div></div>';
+  document.getElementById('journal-prompt').textContent=hasEntryToday?'What is God speaking to you today?':'💭 '+REFLECT[dayOfYear(new Date())%REFLECT.length];
+  const mem=getMemoryEntry();
+  document.getElementById('memory-card').innerHTML=mem?'<div class="memory-card"><div class="memory-label">✨ On this day, '+mem.year+'</div><div class="memory-text">"'+mem.text+'"</div></div>':'';
+  if(journalOpen)renderJournalPast();
+}
+function computeJournalStreak(){let streak=0;let d=new Date();const todayKey=new Date().toDateString();for(let i=0;i<400;i++){const key=d.toDateString();const e=devotNotes[key];const hasText=e&&(typeof e==='string'?e.trim():(e.text||'').trim());if(hasText){streak++;d.setDate(d.getDate()-1);}else if(key===todayKey){d.setDate(d.getDate()-1);}else break;}return streak;}
+function getMemoryEntry(){const today=new Date();const todayKey=today.toDateString();let best=null;for(const dateStr in devotNotes){if(dateStr===todayKey)continue;const e=devotNotes[dateStr];const d=new Date(dateStr);if(isNaN(d))continue;if(d.getMonth()===today.getMonth()&&d.getDate()===today.getDate()&&d.getFullYear()<today.getFullYear()){const text=typeof e==='string'?e:e.text;if(text&&text.trim()){if(!best||d.getFullYear()>best.year)best={text,year:d.getFullYear()};}}}return best;}
+function renderReadingCard(){
+  const el=document.getElementById('reading-card');
+  let devo,label,backLink='',btnHtml;
+  if(currentReading.mode==='today'){
+    devo=todayDevo();
+    label='✨ Today\'s Topic';
+    const done=todayDevotChecks()[1];
+    btnHtml=done?'<button class="reading-mark-btn done" disabled>✓ Marked as read today</button>':'<button class="reading-mark-btn" onclick="markTodayRead()">✅ Mark as read</button>';
+  }else if(currentReading.mode==='topic'){
+    devo=DEVOS[currentReading.idx];
+    label='🔎 Exploring: '+devo.theme;
+    backLink='<span class="reading-back" onclick="backToToday()">← Back to today</span>';
+    btnHtml='';
+  }else if(currentReading.mode==='plan'){
+    const plan=PLANS.find(p=>p.id===currentReading.planId);
+    devo=DEVOS[plan.days[currentReading.day]];
+    label='📘 Day '+(currentReading.day+1)+' of '+plan.days.length+' — '+plan.title;
+    backLink='<span class="reading-back" onclick="backToToday()">← Back to today</span>';
+    const prog=devotPlans[plan.id]||{currentDay:0,completedDates:[]};
+    const alreadyDone=currentReading.day<prog.currentDay;
+    btnHtml=alreadyDone?'<button class="reading-mark-btn done" disabled>✓ Day completed</button>':'<button class="reading-mark-btn" onclick="markPlanDayComplete(\''+plan.id+'\')">✅ Mark day complete</button>';
+  }
+  const todayDateStr=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+  el.innerHTML='<div class="reading-date">'+todayDateStr+'</div><div class="reading-label">'+label+backLink+'</div><div class="reading-topic">'+devo.emoji+' '+devo.topic+'</div><div class="reading-sec-lbl">📖 Scripture — '+devo.verseRef+'</div><div class="reading-body" style="font-style:italic">"'+devo.verseText+'"</div><div class="reading-sec-lbl">💭 Reflection</div><div class="reading-body">'+devo.reading+'</div><div class="reading-sec-lbl">🙏 Today\'s Prayer</div><div class="reading-body">'+devo.prayer+'</div>'+btnHtml;
+}
+function markTodayRead(){const c=todayDevotChecks();c[1]=true;save();renderDevotion();showT('Marked as read ✓','Great start to your devotion today.');}
+function backToToday(){currentReading={mode:'today'};renderReadingCard();document.getElementById('reading-card').scrollIntoView({behavior:'smooth',block:'start'});}
+function renderThemeChips(){
+  const themes=[...new Set(DEVOS.map(d=>d.theme))];
+  document.getElementById('theme-chips').innerHTML=themes.map(t=>'<div class="theme-chip" data-t="'+t+'" onclick="selectTheme(\''+t+'\',this)">'+t+'</div>').join('');
+}
+function selectTheme(theme,el){
+  const wasOn=el.classList.contains('on');
+  document.querySelectorAll('.theme-chip').forEach(c=>c.classList.remove('on'));
+  const resultsEl=document.getElementById('theme-results');
+  if(wasOn){resultsEl.classList.add('hidden');return;}
+  el.classList.add('on');
+  const matches=DEVOS.map((d,i)=>({...d,idx:i})).filter(d=>d.theme===theme);
+  resultsEl.innerHTML=matches.map(d=>'<div class="theme-result-row" onclick="viewTopic('+d.idx+')"><span style="font-size:22px">'+d.emoji+'</span><div><div style="font-size:13px;font-weight:800;color:#0F172A">'+d.topic+'</div><div style="font-size:11px;color:#94A3B8;font-weight:600">'+d.verseRef+'</div></div></div>').join('');
+  resultsEl.classList.remove('hidden');
+}
+function viewTopic(idx){currentReading={mode:'topic',idx};renderReadingCard();document.getElementById('reading-card').scrollIntoView({behavior:'smooth',block:'start'});}
+function renderPlans(){
+  document.getElementById('plans-list').innerHTML=PLANS.map(plan=>{
+    const prog=devotPlans[plan.id]||{currentDay:0,completedDates:[]};
+    const total=plan.days.length;
+    const pct=Math.round(prog.currentDay/total*100);
+    const finished=prog.currentDay>=total;
+    const btnLabel=finished?'✓ Plan complete':(prog.currentDay>0?'Continue — Day '+(prog.currentDay+1):'Start this plan');
+    return '<div class="plan-card"><div class="plan-top"><span class="plan-emoji">'+plan.emoji+'</span><div><div class="plan-title">'+plan.title+'</div><div class="plan-desc">'+plan.desc+'</div></div></div><div class="plan-progress-track"><div class="plan-progress-fill" style="width:'+pct+'%"></div></div><button class="plan-btn'+(finished?' done':'')+'" onclick="'+(finished?'':'openPlanDay(\''+plan.id+'\')')+'"'+(finished?' disabled':'')+'>'+btnLabel+'</button></div>';
+  }).join('');
+}
+function openPlanDay(planId){
+  const plan=PLANS.find(p=>p.id===planId);
+  const prog=devotPlans[planId]||{currentDay:0,completedDates:[]};
+  if(prog.currentDay>=plan.days.length){showT('Plan complete!','You already finished this one. 🎉');return;}
+  currentReading={mode:'plan',planId,day:prog.currentDay};
+  renderReadingCard();
+  document.getElementById('reading-card').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function markPlanDayComplete(planId){
+  const plan=PLANS.find(p=>p.id===planId);
+  if(!devotPlans[planId])devotPlans[planId]={currentDay:0,completedDates:[]};
+  const prog=devotPlans[planId];
+  const todayStr=new Date().toDateString();
+  if(!prog.completedDates.includes(todayStr))prog.completedDates.push(todayStr);
+  prog.currentDay++;
+  save();
+  renderPlans();
+  if(prog.currentDay>=plan.days.length){
+    showT('Plan complete! 🎉',plan.title+' — well done finishing the whole thing!');
+    currentReading={mode:'today'};
+  }else{
+    showT('Day marked complete ✓','Day '+(prog.currentDay+1)+' unlocked for '+plan.title+'.');
+    currentReading={mode:'plan',planId,day:prog.currentDay};
+  }
+  renderReadingCard();
+}
+function togDevot(i){const c=todayDevotChecks();c[i]=!c[i];save();const el=document.getElementById('dc'+i);el.classList.toggle('on',c[i]);el.innerHTML=c[i]?'<i class="ti ti-check"></i>':'';if(c[i])showT('Step completed','Keep going in your devotion.');document.getElementById('devot-streak-n').textContent=computeDevotStreak();renderReadingCard();}
+function setPrayerCat(cat,el){prayerCatFilter=cat;document.querySelectorAll('#prayer-cat-filter .cat-pill').forEach(p=>p.classList.remove('on'));el.classList.add('on');renderPrayers();}
+function setPrayerView(mode,el){prayerViewMode=mode;document.querySelectorAll('#v-devotion .life-tabs .life-tab').forEach(t=>t.classList.remove('on'));el.classList.add('on');document.getElementById('prayer-add-card').classList.toggle('hidden',mode==='answered');renderPrayers();}
+function savePrayer(){const t=document.getElementById('prayer-inp').value.trim();if(!t)return;const cat=document.getElementById('prayer-cat-select').value;prayers.unshift({id:Date.now(),text:t,cat,date:new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'}),createdAt:new Date().toISOString(),answered:false,answeredAt:null,note:''});document.getElementById('prayer-inp').value='';save();renderPrayerStats();renderPrayers();showT('Prayer added','God hears every prayer.');}
+const PCAT={health:{e:'🩺',l:'Health'},family:{e:'👨‍👩‍👧',l:'Family'},work:{e:'💼',l:'Work'},relationships:{e:'💗',l:'Relationships'},finances:{e:'💰',l:'Finances'},growth:{e:'🌱',l:'Growth'},other:{e:'✨',l:'Other'}};
+function renderPrayerStats(){const total=prayers.length,answered=prayers.filter(p=>p.answered).length,active=total-answered,rate=total?Math.round(answered/total*100):0;document.getElementById('prayer-stats').innerHTML='<div class="pr-stat-tile"><div class="pr-stat-val" style="color:#0E7490">'+active+'</div><div class="pr-stat-lbl">Active</div></div><div class="pr-stat-tile"><div class="pr-stat-val" style="color:#D97706">'+answered+'</div><div class="pr-stat-lbl">Answered</div></div><div class="pr-stat-tile"><div class="pr-stat-val" style="color:#059669">'+rate+'%</div><div class="pr-stat-lbl">Answer rate</div></div>';}
+function renderPrayers(){
+  const el=document.getElementById('prayer-list');
+  let filtered=prayers.filter(p=>prayerViewMode==='answered'?p.answered:!p.answered);
+  if(prayerCatFilter!=='all')filtered=filtered.filter(p=>(p.cat||'other')===prayerCatFilter);
+  if(!filtered.length){el.innerHTML='<div class="card" style="padding:20px;text-align:center;color:#94A3B8;font-size:13px;font-weight:600">'+(prayerViewMode==='answered'?'No answered prayers here yet. Keep praying — they\'re coming! 🙏':'No active prayer requests in this category.')+'</div>';return;}
+  el.innerHTML=filtered.map(p=>{
+    const gi=prayers.findIndex(x=>x.id===p.id);
+    const c=PCAT[p.cat||'other'];
+    if(p.answered){
+      const created=p.createdAt?new Date(p.createdAt):null,answered=p.answeredAt?new Date(p.answeredAt):null;
+      let daysTxt='';
+      if(created&&answered){const days=Math.max(0,Math.round((answered-created)/86400000));daysTxt='Answered after '+(days===0?'less than a day':days+' day'+(days===1?'':'s'));}
+      return '<div class="prayer-item answered-item"><div style="display:flex;align-items:flex-start;gap:10px"><span style="font-size:18px">🏆</span><div style="flex:1;min-width:0"><div class="prayer-text" style="color:#78350F">'+p.text+'</div><div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:4px"><span style="font-size:10px;color:#92400E;font-weight:700">'+c.e+' '+c.l+' · '+p.date+'</span>'+(daysTxt?'<span class="prayer-answered-badge">✨ '+daysTxt+'</span>':'')+'</div><input class="prayer-note-inp" placeholder="How was this answered? (optional)" value="'+(p.note||'').replace(/"/g,'&quot;')+'" onblur="saveAnsweredNote('+gi+',this.value)"></div><span class="prayer-del" onclick="delPrayer('+gi+')" style="min-width:32px;min-height:32px">×</span></div></div>';
+    }
+    return '<div class="prayer-item active-item"><div onclick="togPrayer('+gi+')" style="display:flex;align-items:flex-start;gap:11px;flex:1;min-width:0;cursor:pointer"><div class="prayer-chk"></div><div style="flex:1;min-width:0"><div class="prayer-text">'+p.text+'</div><div class="prayer-date">'+c.e+' '+c.l+' · '+p.date+'</div></div></div><span class="prayer-del" onclick="event.stopPropagation();delPrayer('+gi+')">×</span></div>';
+  }).join('');
+}
+function togPrayer(i){prayers[i].answered=!prayers[i].answered;prayers[i].answeredAt=prayers[i].answered?new Date().toISOString():null;save();renderPrayerStats();renderPrayers();if(prayers[i].answered){const cnt=prayers.filter(p=>p.answered).length;showT('🎉 Prayer answered!','Praise God! That\'s '+cnt+' answered so far.');}}
+function saveAnsweredNote(i,val){prayers[i].note=val.trim();save();}
+function delPrayer(i){prayers.splice(i,1);save();renderPrayerStats();renderPrayers();}
+function togJTag(el){const t=el.dataset.t;const idx=selectedJTags.indexOf(t);if(idx>=0)selectedJTags.splice(idx,1);else selectedJTags.push(t);el.classList.toggle('on',selectedJTags.includes(t));}
+function saveDevotNotes(){const todayStr=new Date().toDateString();const text=document.getElementById('devot-notes').value.trim();devotNotes[todayStr]={text,tags:[...selectedJTags]};save();showT('Entry saved','Keep seeking His word.');}
+function togJournalView(){journalOpen=!journalOpen;document.getElementById('journal-past').classList.toggle('hidden',!journalOpen);document.getElementById('journal-toggle-lbl').textContent=journalOpen?'✍️ New entry':'📚 Past entries';if(journalOpen)renderJournalPast();}
+const JTAGS={grateful:'🙏 Grateful',struggling:'😔 Struggling',breakthrough:'✨ Breakthrough',peace:'🕊️ Peace',doubt:'🌫️ Doubt',answered:'🎉 Answered prayer',growth:'🌱 Growth'};
+function renderJournalPast(){
+  const search=(document.getElementById('journal-search').value||'').toLowerCase();
+  const allTags=[...new Set(Object.values(devotNotes).flatMap(e=>typeof e==='object'?(e.tags||[]):[]))];
+  document.getElementById('journal-filter-tags').innerHTML=allTags.map(t=>'<div class="tag-chip'+(journalTagFilter===t?' on':'')+'" onclick="setJournalFilter(\''+t+'\')">'+(JTAGS[t]||t)+'</div>').join('');
+  const allEntries=Object.entries(devotNotes).map(([date,e])=>({date,text:typeof e==='string'?e:e.text,tags:typeof e==='object'?(e.tags||[]):[]})).filter(e=>e.text&&e.text.trim());
+  const now=new Date();
+  const monthWords=allEntries.filter(e=>{const d=new Date(e.date);return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear();}).reduce((a,e)=>a+e.text.trim().split(/\s+/).length,0);
+  document.getElementById('journal-stat-line').textContent='📝 '+allEntries.length+' total entries · '+monthWords+' words written this month';
+  const entries=allEntries.filter(e=>!search||e.text.toLowerCase().includes(search)).filter(e=>!journalTagFilter||e.tags.includes(journalTagFilter)).sort((a,b)=>new Date(b.date)-new Date(a.date));
+  const el=document.getElementById('journal-entries');
+  el.innerHTML=entries.length?entries.map(e=>'<div class="journal-entry"><div class="journal-entry-date">'+new Date(e.date).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+'</div><div class="journal-entry-text">'+e.text+'</div>'+(e.tags.length?'<div class="journal-entry-tags">'+e.tags.map(t=>'<span class="journal-entry-tag">'+(JTAGS[t]||t)+'</span>').join('')+'</div>':'')+'</div>').join(''):'<div style="padding:14px 0;color:#94A3B8;font-size:13px;font-weight:600">No entries found.</div>';
+}
+function setJournalFilter(t){journalTagFilter=journalTagFilter===t?null:t;renderJournalPast();}
+
+
+// PERIOD
+function computeCycleInfo(){
+  const today=new Date();
+  const prof=period.profile||{};
+  const fallbackCycle=prof.cyclen?prof.cyclen:28;
+  const fallbackDur=prof.perlen?prof.perlen:5;
+  const avgCycle=period.cycles.length>=2?Math.round(period.cycles.slice(0,-1).reduce((a,c,i)=>{const diff=Math.abs((new Date(period.cycles[i].start)-new Date(period.cycles[i+1].start))/86400000);return a+diff;},0)/(period.cycles.length-1)):fallbackCycle;
+  const finishedCycles=period.cycles.filter(c=>c.end);
+  const avgDur=finishedCycles.length?Math.round(finishedCycles.reduce((a,c)=>a+Math.floor((new Date(c.end)-new Date(c.start))/86400000)+1,0)/finishedCycles.length):fallbackDur;
+  const lastStart=period.active?period.active.start:(period.cycles.length?period.cycles[0].start:null);
+  let cycleDay=0,daysToNext='--';
+  if(lastStart){cycleDay=Math.floor((today-new Date(lastStart))/86400000)+1;daysToNext=Math.max(0,avgCycle-cycleDay+1);}
+  const ovulationDayOfCycle=Math.max(avgDur+2,avgCycle-14);
+  const phase=cycleDay<=avgDur?'Menstrual':cycleDay<ovulationDayOfCycle-2?'Follicular':cycleDay<=ovulationDayOfCycle+1?'Ovulation':'Luteal';
+  let ovulationDate=null,fertileStart=null,fertileEnd=null,chance='Low';
+  if(lastStart){
+    const nextPeriod=new Date(lastStart+'T00:00:00');nextPeriod.setDate(nextPeriod.getDate()+avgCycle);
+    ovulationDate=new Date(nextPeriod);ovulationDate.setDate(ovulationDate.getDate()-14);
+    fertileStart=new Date(ovulationDate);fertileStart.setDate(fertileStart.getDate()-5);
+    fertileEnd=new Date(ovulationDate);
+    const todayMid=new Date(today.getFullYear(),today.getMonth(),today.getDate());
+    const diffOv=Math.round((ovulationDate-todayMid)/86400000);
+    if(diffOv===0)chance='Peak';
+    else if(diffOv>0&&diffOv<=5)chance='High';
+    else if(diffOv<0&&diffOv>=-1)chance='Medium';
+    else chance='Low';
+  }
+  return{avgCycle,avgDur,lastStart,cycleDay,daysToNext,phase,ovulationDate,fertileStart,fertileEnd,chance};
+}
+function computeFutureCycles(info,count){
+  const arr=[];
+  if(!info.lastStart)return arr;
+  const base=new Date(info.lastStart+'T00:00:00');
+  for(let i=1;i<=count;i++){
+    const predStart=new Date(base);predStart.setDate(predStart.getDate()+info.avgCycle*i);
+    const ov=new Date(predStart);ov.setDate(ov.getDate()-14);
+    const fs=new Date(ov);fs.setDate(fs.getDate()-5);
+    arr.push({predStart,ov,fertileStart:fs,fertileEnd:ov,duration:info.avgDur});
+  }
+  return arr;
+}
+function changeCalMonth(delta){calViewMonth+=delta;if(calViewMonth<0){calViewMonth=11;calViewYear--;}if(calViewMonth>11){calViewMonth=0;calViewYear++;}renderPeriod();}
+function jumpToday(){calViewYear=new Date().getFullYear();calViewMonth=new Date().getMonth();renderPeriod();}
+function togProfileForm(){const f=document.getElementById('profile-form');const opening=f.classList.contains('hidden');if(opening){const p=period.profile||{};document.getElementById('cf-age').value=p.age||'';document.getElementById('cf-cyclen').value=p.cyclen||'';document.getElementById('cf-perlen').value=p.perlen||'';document.getElementById('cf-reg').value=p.reg||'regular';document.getElementById('cf-goal').value=p.goal||'track';}f.classList.toggle('hidden');}
+function saveProfile(){const age=parseInt(document.getElementById('cf-age').value)||null;const cyclen=parseInt(document.getElementById('cf-cyclen').value)||null;const perlen=parseInt(document.getElementById('cf-perlen').value)||null;const reg=document.getElementById('cf-reg').value;const goal=document.getElementById('cf-goal').value;period.profile={age,cyclen,perlen,reg,goal,done:true};save();togProfileForm();renderPeriod();showT('Profile saved ✨','Your predictions are now personalized to you.');}
+function renderPeriod(){
+  const info=computeCycleInfo();
+  const today=new Date(),todayStr=today.toISOString().split('T')[0];
+  document.getElementById('cycle-intro-card').classList.toggle('hidden',!!(period.profile&&period.profile.done));
+  document.getElementById('period-month-lbl').textContent=new Date(calViewYear,calViewMonth,1).toLocaleDateString('en-US',{month:'long',year:'numeric'});
+  const isCurrentMonth=(calViewYear===today.getFullYear()&&calViewMonth===today.getMonth());
+  document.getElementById('cal-today-link').classList.toggle('hidden',isCurrentMonth);
+  document.getElementById('ps-day').textContent=info.cycleDay||'--';
+  document.getElementById('ps-next').textContent=info.daysToNext;
+  document.getElementById('ps-dur').textContent=info.avgDur+'d';
+  document.getElementById('ps-len').textContent=info.avgCycle+'d';
+  document.getElementById('period-hero-sub').textContent=period.active?'🩸 Period is active — take care of yourself':(VIBE[info.phase]?VIBE[info.phase].title:info.phase)+' · Day '+(info.cycleDay||'-');
+  document.querySelectorAll('.phase-seg').forEach(s=>s.classList.toggle('active',s.dataset.ph===info.phase));
+  document.getElementById('p-start-btn').style.opacity=period.active?'.4':'1';
+  document.getElementById('p-end-btn').style.opacity=period.active?'1':'.4';
+  const v=VIBE[info.phase];
+  const chanceLbl=info.chance==='Peak'?'Peak fertility 🌟':info.chance==='High'?'High chance 🌸':info.chance==='Medium'?'Medium chance 💫':'Low chance today';
+  let extraTip='';
+  const goal=period.profile?period.profile.goal:null;
+  if(goal==='ttc'&&(info.phase==='Ovulation'))extraTip=' You\'re in your prime window if you\'re trying to conceive! 🍼';
+  else if(goal==='avoid'&&(info.chance==='High'||info.chance==='Peak'))extraTip=' Extra caution today if you\'re avoiding pregnancy. ⚠️';
+  const vc=document.getElementById('vibe-card');
+  vc.style.background=v.grad;
+  vc.innerHTML='<div class="vibe-emoji">'+v.emoji+'</div><div class="vibe-title">'+v.title+'</div><div class="vibe-tag">'+v.tag+'</div><div class="vibe-tip">'+v.tip+extraTip+'</div><div class="chance-row"><div class="chance-chip"><div class="cv">'+chanceLbl+'</div><div class="cl">Pregnancy chance</div></div></div>';
+  const m=METERS[info.phase];
+  document.getElementById('vibe-meters').innerHTML='<div style="font-size:12px;font-weight:800;color:#64748B;text-transform:uppercase;letter-spacing:.5px;margin-bottom:14px">🔮 Your body forecast</div><div class="meter-row"><div class="meter-top"><span>💃 Social battery</span><span style="color:#BE185D">'+m.social_lbl+'</span></div><div class="meter-track"><div class="meter-fill" style="width:'+m.social+'%;background:linear-gradient(90deg,#BE185D,#EC4899)"></div></div></div><div class="meter-row"><div class="meter-top"><span>💪 Workout readiness</span><span style="color:#059669">'+m.workout_lbl+'</span></div><div class="meter-track"><div class="meter-fill" style="width:'+m.workout+'%;background:linear-gradient(90deg,#059669,#34D399)"></div></div></div><div class="meter-row"><div class="meter-top"><span>✨ Skin clarity</span><span style="color:#D97706">'+m.skin_lbl+'</span></div><div class="meter-track"><div class="meter-fill" style="width:'+m.skin+'%;background:linear-gradient(90deg,#D97706,#FBBF24)"></div></div></div>';
+  const year=calViewYear,month=calViewMonth;
+  const daysInMonth=new Date(year,month+1,0).getDate();
+  const periodDays=new Set();
+  [...period.cycles,(period.active||null)].filter(Boolean).forEach(c=>{if(!c.start)return;const s=new Date(c.start+'T00:00:00'),e=c.end?new Date(c.end+'T00:00:00'):new Date(c.start+'T00:00:00');for(let d=new Date(s);d<=e;d.setDate(d.getDate()+1)){if(d.getFullYear()===year&&d.getMonth()===month)periodDays.add(d.getDate());}});
+  const predictedDays=new Set(),fertileDays=new Set(),ovulationDaySet=new Set();
+  if(info.lastStart){
+    const future=computeFutureCycles(info,4);
+    future.forEach(fc=>{
+      for(let i=0;i<fc.duration;i++){const pd=new Date(fc.predStart);pd.setDate(pd.getDate()+i);if(pd.getFullYear()===year&&pd.getMonth()===month)predictedDays.add(pd.getDate());}
+      for(let d=new Date(fc.fertileStart);d<=fc.fertileEnd;d.setDate(d.getDate()+1)){if(d.getFullYear()===year&&d.getMonth()===month)fertileDays.add(d.getDate());}
+      if(fc.ov.getFullYear()===year&&fc.ov.getMonth()===month)ovulationDaySet.add(fc.ov.getDate());
+    });
+  }
+  document.getElementById('period-cal').innerHTML=Array.from({length:daysInMonth},(_,i)=>{const d=i+1;const isT=(year===today.getFullYear()&&month===today.getMonth()&&d===today.getDate());let cls='empty';if(periodDays.has(d))cls='period';else if(ovulationDaySet.has(d))cls='ovulation';else if(fertileDays.has(d))cls='fertile';else if(predictedDays.has(d))cls='predicted';const star=ovulationDaySet.has(d)?'⭐':'';return'<div class="pcb '+cls+(isT?' today':'')+'">'+d+star+'</div>';}).join('');
+  const todayFlow=period.flow[todayStr];
+  document.querySelectorAll('.flow-pill').forEach(p=>p.classList.toggle('on',p.dataset.fl===todayFlow));
+  const todayEnergy=period.energy[todayStr];
+  document.querySelectorAll('.energy-pill').forEach(p=>p.classList.toggle('on',p.dataset.en===todayEnergy));
+  const todaySyms=period.symptoms[todayStr]||[];
+  document.querySelectorAll('.sym-pill').forEach(p=>p.classList.toggle('on',todaySyms.includes(p.dataset.s)));
+  let fact=FACTS[today.getDate()%FACTS.length];
+  if(period.profile&&period.profile.age>=35){fact='Since you\'re 35+: fertility naturally begins to shift gradually with age — tracking closely like this helps you understand your own pattern rather than relying on averages.';}
+  document.getElementById('fact-card').innerHTML='<div class="fact-label">✨ Did you know</div><div class="fact-text">'+fact+'</div>';
+  const hist=document.getElementById('period-hist');
+  if(!period.cycles.length){hist.innerHTML='<div style="padding:14px;color:#94A3B8;font-size:13px;font-weight:600">No cycles logged yet. Tap "Start period" or "Log past period" above.</div>';return;}
+  hist.innerHTML=period.cycles.slice(0,6).map((c,i)=>{const dur=c.end?Math.floor((new Date(c.end)-new Date(c.start))/86400000)+1+'d':'Active';const cyc=i<period.cycles.length-1?Math.round(Math.abs((new Date(c.start)-new Date(period.cycles[i+1].start))/86400000))+'d':'--';return'<div class="ph-row"><div><div class="ph-date">🩸 '+new Date(c.start+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})+'</div><div class="ph-detail">Cycle length: '+cyc+'</div></div><div class="ph-dur">'+dur+'</div></div>';}).join('');
+}
+function togStartForm(){if(period.active){showT('Period already active','Tap "End period" when done.');return;}const f=document.getElementById('start-period-form');const opening=f.classList.contains('hidden');if(opening)document.getElementById('sp-date').value=new Date().toISOString().split('T')[0];f.classList.toggle('hidden');document.getElementById('end-period-form').classList.add('hidden');}
+function confirmStartPeriod(){const d=document.getElementById('sp-date').value;if(!d){showT('Pick a date','Choose the day your period started.');return;}if(new Date(d)>new Date()){showT('Check the date','That date is in the future.');return;}period.active={start:d,end:null};save();togStartForm();renderPeriod();showT('Period started 🩸','Logged for '+new Date(d+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric'})+'. Take care of yourself.');}
+function togEndForm(){if(!period.active){showT('No active period','Tap "Start period" first.');return;}const f=document.getElementById('end-period-form');const opening=f.classList.contains('hidden');if(opening)document.getElementById('ep-date').value=new Date().toISOString().split('T')[0];f.classList.toggle('hidden');document.getElementById('start-period-form').classList.add('hidden');}
+function confirmEndPeriod(){const d=document.getElementById('ep-date').value;if(!d){showT('Pick a date','Choose the day your period ended.');return;}if(new Date(d)<new Date(period.active.start)){showT('Check the date','End date is before the start date.');return;}period.active.end=d;period.cycles.unshift({...period.active});period.cycles.sort((a,b)=>new Date(b.start)-new Date(a.start));if(period.cycles.length>12)period.cycles=period.cycles.slice(0,12);period.active=null;save();togEndForm();renderPeriod();showT('Period ended ✓','Logged and saved. Stay hydrated!');}
+function togPastForm(){const f=document.getElementById('past-form');const opening=f.classList.contains('hidden');if(opening){document.getElementById('pp-start').value='';document.getElementById('pp-end').value='';}f.classList.toggle('hidden');}
+function savePastPeriod(){const s=document.getElementById('pp-start').value;const e=document.getElementById('pp-end').value;if(!s){showT('Missing date','Pick at least a start date.');return;}if(e&&new Date(e)<new Date(s)){showT('Check your dates','End date is before start date.');return;}period.cycles.push({start:s,end:e||s});period.cycles.sort((a,b)=>new Date(b.start)-new Date(a.start));if(period.cycles.length>12)period.cycles=period.cycles.slice(0,12);save();togPastForm();renderPeriod();showT('Past period logged 🗓️','Added to your cycle history.');}
+function setFlow(el,fl){const todayStr=new Date().toISOString().split('T')[0];period.flow[todayStr]=fl;save();document.querySelectorAll('.flow-pill').forEach(p=>p.classList.toggle('on',p.dataset.fl===fl));showT('Flow logged',fl.charAt(0).toUpperCase()+fl.slice(1));}
+function setEnergy(el,val){const todayStr=new Date().toISOString().split('T')[0];period.energy[todayStr]=val;save();document.querySelectorAll('.energy-pill').forEach(p=>p.classList.toggle('on',p.dataset.en===val));showT('Energy logged',val.charAt(0).toUpperCase()+val.slice(1)+' energy today.');}
+function togSym(el){const todayStr=new Date().toISOString().split('T')[0];if(!period.symptoms[todayStr])period.symptoms[todayStr]=[];const s=el.dataset.s;const idx=period.symptoms[todayStr].indexOf(s);if(idx>=0)period.symptoms[todayStr].splice(idx,1);else period.symptoms[todayStr].push(s);el.classList.toggle('on',period.symptoms[todayStr].includes(s));save();}
+
+
+// HEALTH
+function renderHealth(){
+  document.getElementById('h2-water').textContent=water;
+  document.getElementById('h2-wsub').textContent=water>=8?'Goal reached!':'Goal: 8';
+  const ls2=sleepLog.length?sleepLog[sleepLog.length-1]:null;
+  document.getElementById('h2-sleep').textContent=ls2?ls2.toFixed(1)+' h':'--';
+  document.getElementById('h2-ssub').textContent=ls2?(ls2>=7&&ls2<=9?'Great range':'Check your sleep'):'7-9 hrs ideal';
+  document.getElementById('wdots').innerHTML=Array.from({length:8},(_,i)=>'<div class="wd'+(i<water?' on':'')+'" onclick="addW()"><i class="ti ti-droplet"></i></div>').join('');
+  renderSChart();
+  document.getElementById('supplist').innerHTML=supps.map((s,i)=>'<div class="supp-row" onclick="togSupp('+i+')" style="cursor:pointer"><div class="sq'+(s.done?' on':'')+'">'+(s.done?'<i class="ti ti-check"></i>':'')+'</div><div class="sn">'+s.n+'</div><div class="st2">'+s.t+'</div></div>').join('');}
+function logS(){const v=parseFloat(document.getElementById('sinp').value);if(isNaN(v)||v<2||v>14){showT('Check your entry','Enter hours between 2 and 14.');return;}sleepLog.push(v);if(sleepLog.length>7)sleepLog.shift();document.getElementById('sinp').value='';save();renderHealth();renderHome();showT('Sleep logged',v.toFixed(1)+' hrs - '+(v>=7&&v<=9?'Perfect range!':v<6?'Aim for 7-9 hrs.':'A bit long.'));}
+function renderSChart(){const days=['Mo','Tu','We','Th','Fr','Sa','Su'];const el=document.getElementById('schart');const data=Array(7).fill(0).map((_,i)=>sleepLog[i]||0);el.innerHTML=data.map((v,i)=>{const pct=v?Math.min(Math.round(v/10*100),100):0;const col=v===0?'rgba(255,255,255,.18)':v>=7&&v<=9?'#34D399':v<6?'#F87171':'#FBBF24';return'<div class="sbc"><div class="sbv">'+(v?v.toFixed(1):'')+'</div><div style="flex:1;width:100%;display:flex;align-items:flex-end"><div class="sbi" style="height:'+pct+'%;min-height:'+(v?4:2)+'px;background:'+col+'"></div></div><div class="sbd">'+days[i]+'</div></div>';}).join('');}
+function togSupp(i){supps[i].done=!supps[i].done;save();renderHealth();}
+function logWk(el,type){document.querySelectorAll('.wk-pill').forEach(p=>p.classList.remove('on'));el.classList.add('on');showT('Workout logged!',type+' - great work!');}
+
+// FOCUS TIMER
+
+// ACCOUNTABILITY
+function renderAccountability(){
+  const sc=calcScore();
+  document.getElementById('score-big').textContent=sc.total;
+  document.getElementById('score-arc').style.strokeDashoffset=String(Math.round(376.9*(1-sc.total/100)));
+  const rows=[
+    {lbl:'Tasks completed',pts:sc.taskPts,max:30,col:'#4F46E5',bg:'#EEF2FF',ic:'ti-checks'},
+    {lbl:'Water intake',pts:sc.waterPts,max:15,col:'#0F766E',bg:'#CCFBF1',ic:'ti-droplet'},
+    {lbl:'Sleep quality',pts:sc.sleepPts,max:15,col:'#7C3AED',bg:'#EDE9FE',ic:'ti-moon'},
+    {lbl:'Devotional done',pts:sc.devotPts,max:20,col:'#D97706',bg:'#FEF3C7',ic:'ti-bible'},
+    {lbl:'Supplements taken',pts:sc.suppPts,max:10,col:'#059669',bg:'#D1FAE5',ic:'ti-pill'},
+    {lbl:'Workout logged',pts:sc.wkPts,max:10,col:'#BE185D',bg:'#FCE7F3',ic:'ti-barbell'},
+  ];
+  document.getElementById('score-breakdown').innerHTML=rows.map(r=>'<div class="sb-row"><div class="sb-icon" style="background:'+r.bg+'"><i class="ti '+r.ic+'" style="color:'+r.col+'"></i></div><div style="flex:1;min-width:0"><div class="sb-label">'+r.lbl+'</div><div class="sb-bar-wrap"><div class="sb-bar" style="width:'+Math.round(r.pts/r.max*100)+'%;background:'+r.col+'"></div></div></div><div class="sb-pts" style="color:'+r.col+'">'+r.pts+'/'+r.max+'</div></div>').join('');
+  renderCommits();
+  document.getElementById('notif-track').classList.toggle('on',notifOn);
+  const days=['S','M','T','W','T','F','S'],todayIdx=new Date().getDay();
+  document.getElementById('weekly-dots').innerHTML=days.map((d,i)=>{const isT=i===todayIdx,past=i<todayIdx,score=past?weeklyScores[i]||0:0,gold=score>=80;return'<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px"><div style="width:36px;height:36px;border-radius:50%;background:'+(isT?'linear-gradient(135deg,#4F46E5,#7C3AED)':gold?'linear-gradient(135deg,#F5C842,#E8A020)':past?'#E2E8F0':'transparent')+';border:2px solid '+(isT||gold?'transparent':'#E2E8F0')+';display:flex;align-items:center;justify-content:center"><span style="font-size:11px;font-weight:800;color:'+(isT||gold?'#fff':'#94A3B8')+'">'+(isT?sc.total:past&&score?score:'')+'</span></div><span style="font-size:10px;color:'+(isT?'#4F46E5':'#94A3B8')+';font-weight:700">'+d+'</span></div>';}).join('');
+  renderProgressCharts();
+  buildSharePreview();
+}
+function renderProgressCharts(){
+  const days=[];for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);days.push(d);}
+  const todayKey=new Date().toDateString();
+  const taskPct=days.map(d=>{const key=d.toDateString();if(key===todayKey)return tasks.length?Math.round(tasks.filter(t=>t.done).length/tasks.length*100):0;const h=taskHistory[key];return h&&h.total?Math.round(h.done/h.total*100):0;});
+  const waterVals=days.map(d=>{const key=d.toDateString();if(key===todayKey)return water;return waterHistory[key]||0;});
+  const moodVals=days.map(d=>{const key=d.toDateString();if(key===todayKey)return mood;return moodHistory[key]||0;});
+  const moodEmojis=['—','😢','😕','😐','🙂','😄'];
+  const dayLbls=days.map(d=>d.toLocaleDateString('en-US',{weekday:'short'})[0]);
+  let html='<div style="font-size:11px;font-weight:800;color:#0F172A;margin-bottom:6px">✅ Task completion</div>';
+  html+='<div style="display:flex;align-items:flex-end;gap:4px;height:44px;margin-bottom:16px">'+taskPct.map((p,i)=>'<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px"><div style="width:100%;height:36px;display:flex;align-items:flex-end"><div style="width:100%;height:'+Math.max(p,4)+'%;background:linear-gradient(180deg,#7C3AED,#4F46E5);border-radius:3px 3px 0 0"></div></div><span style="font-size:8px;color:#94A3B8;font-weight:700">'+dayLbls[i]+'</span></div>').join('')+'</div>';
+  html+='<div style="font-size:11px;font-weight:800;color:#0F172A;margin-bottom:6px">💧 Water intake</div>';
+  html+='<div style="display:flex;align-items:flex-end;gap:4px;height:44px;margin-bottom:16px">'+waterVals.map((w,i)=>'<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px"><div style="width:100%;height:36px;display:flex;align-items:flex-end"><div style="width:100%;height:'+Math.max(w/8*100,4)+'%;background:linear-gradient(180deg,#34D399,#0F766E);border-radius:3px 3px 0 0"></div></div><span style="font-size:8px;color:#94A3B8;font-weight:700">'+dayLbls[i]+'</span></div>').join('')+'</div>';
+  html+='<div style="font-size:11px;font-weight:800;color:#0F172A;margin-bottom:8px">🙂 Mood</div>';
+  html+='<div style="display:flex;justify-content:space-between">'+moodVals.map((m,i)=>'<div style="text-align:center"><div style="font-size:17px">'+moodEmojis[m]+'</div><div style="font-size:8px;color:#94A3B8;font-weight:700;margin-top:3px">'+dayLbls[i]+'</div></div>').join('')+'</div>';
+  document.getElementById('progress-charts').innerHTML=html;
+}
+function buildSharePreview(){const sc=calcScore();const partner=(document.getElementById('partner-name')||{}).value||'my accountability partner';const done=tasks.filter(t=>t.done).length;const lines=['Hey '+(partner!=='my accountability partner'?partner:'there')+'! My daily update:','','Tasks: '+done+'/'+tasks.length+' done','Water: '+water+'/8 glasses','Devotional: '+todayDevotChecks().filter(Boolean).length+'/5 steps','Score: '+sc.total+'/100','',sc.total>=80?'Crushing it today!':sc.total>=60?'Making progress!':'Still pushing forward!'];const el=document.getElementById('share-preview');if(el)el.innerHTML=lines.join('\n').replace(/\n/g,'<br>');}
+function togNotif(){if(!notifOn&&'Notification' in window){Notification.requestPermission().then(perm=>{notifOn=perm==='granted';save();document.getElementById('notif-track').classList.toggle('on',notifOn);if(notifOn){showT('Notifications on!','You will get daily reminders.');try{new Notification('My Life Hub',{body:'Daily reminders are now active. Stay on track!'});}catch(e){}}else showT('Permission needed','Enable notifications in your browser settings.')});}else{notifOn=!notifOn;save();document.getElementById('notif-track').classList.toggle('on',notifOn);showT(notifOn?'Notifications on!':'Notifications off',notifOn?'You will be reminded daily.':'Toggled off.');}}
+function addCommit(){const t=(document.getElementById('commit-inp')||{}).value.trim();if(!t)return;commits.unshift({id:Date.now(),text:t,kept:false,date:new Date().toDateString()});document.getElementById('commit-inp').value='';save();renderCommits();showT('Commitment added!','Hold yourself to it!');}
+function renderCommits(){const today=new Date().toDateString(),todayC=commits.filter(c=>c.date===today);const el=document.getElementById('commit-list');if(!el)return;el.innerHTML=todayC.length?todayC.map(c=>{const gi=commits.findIndex(x=>x.id===c.id);return'<div class="commit-item"><div onclick="togCommit('+gi+')" style="display:flex;align-items:flex-start;gap:10px;flex:1;min-width:0;cursor:pointer"><div class="commit-chk'+(c.kept?' on':'')+'">'+(c.kept?'<i class="ti ti-check"></i>':'')+'</div><div class="commit-text'+(c.kept?' kept':'')+'">'+c.text+'</div></div><span style="color:#CBD5E1;font-size:18px;cursor:pointer;padding:8px;min-width:32px;min-height:32px;display:flex;align-items:center;justify-content:center" onclick="delCommit('+gi+')">x</span></div>';}).join(''):'<div style="color:#94A3B8;font-size:13px;font-weight:600;padding:4px 0">No commitments yet today. What will you commit to?</div>';}
+function togCommit(i){commits[i].kept=!commits[i].kept;save();renderCommits();if(commits[i].kept)showT('Commitment kept!','That is accountability in action.');}
+function delCommit(i){commits.splice(i,1);save();renderCommits();}
+function shareProgress(){const sc=calcScore();const done=tasks.filter(t=>t.done).length;const partner=(document.getElementById('partner-name')||{}).value||'friend';const text='Hey '+partner+'! My life hub daily update:\n\nTasks: '+done+'/'+tasks.length+' done\nWater: '+water+'/8 glasses\nDevotion: '+todayDevotChecks().filter(Boolean).length+'/5 steps\nSleep: '+(sleepLog.length?sleepLog[sleepLog.length-1].toFixed(1)+' hrs':'Not logged')+'\nScore: '+sc.total+'/100\n\n'+(sc.total>=80?'Crushing it!':sc.total>=60?'Making good progress':'Still pushing');if(navigator.share){navigator.share({title:'My Daily Progress',text}).catch(()=>{});}else if(navigator.clipboard){navigator.clipboard.writeText(text).then(()=>showT('Copied!','Paste and send to your partner.'));}}
+function shareWhatsApp(){const sc=calcScore();const done=tasks.filter(t=>t.done).length;const partner=(document.getElementById('partner-name')||{}).value||'friend';const text=encodeURIComponent('Hey '+partner+'! My daily update\nTasks: '+done+'/'+tasks.length+'\nWater: '+water+'/8\nDevotion: '+todayDevotChecks().filter(Boolean).length+'/5\nScore: '+sc.total+'/100\n'+(sc.total>=80?'Crushing it!':'Keep pushing!'));window.open('https://wa.me/?text='+text,'_blank');}
+
+// BILLS & GROCERY
+function renderBills(){
+  const day=new Date().getDate();
+  document.getElementById('b-paid-n').textContent=bills.filter(b=>b.paid).length;
+  document.getElementById('b-due-n').textContent=bills.filter(b=>!b.paid).length;
+  document.getElementById('b-rem-sub').textContent='$'+bills.filter(b=>!b.paid).reduce((a,b)=>a+b.a,0).toLocaleString()+' left';
+  document.getElementById('blist').innerHTML=bills.length?bills.map((b,i)=>{const dN=parseInt(b.due)||0,soon=!b.paid&&dN&&Math.abs(dN-day)<=5,cls=b.paid?'bp':soon?'bs':'bd',lbl=b.paid?'Paid':soon?'Due soon':'Unpaid',ibg=b.paid?'linear-gradient(135deg,#D1FAE5,#A7F3D0)':soon?'linear-gradient(135deg,#FEF3C7,#FDE68A)':'linear-gradient(135deg,#FEE2E2,#FECACA)',itx=b.paid?'#059669':soon?'#D97706':'#DC2626';return'<div class="bill-row" style="padding:8px 8px 8px 16px"><div onclick="togBill('+i+')" style="display:flex;align-items:center;gap:11px;flex:1;min-width:0;padding:4px 0"><div class="b-icon" style="background:'+ibg+'"><i class="ti '+b.ic+'" style="color:'+itx+'"></i></div><div style="flex:1;min-width:0"><div class="b-name">'+b.n+'</div><div class="b-due">Due: '+b.due+'</div></div><div style="text-align:right;flex-shrink:0"><div class="b-amt">$'+b.a+'</div><div class="b-badge '+cls+'">'+lbl+'</div></div></div><div style="display:flex;flex-direction:column;flex-shrink:0"><span onclick="event.stopPropagation();editBill('+i+')" style="color:#94A3B8;font-size:16px;cursor:pointer;padding:8px;min-width:40px;min-height:40px;display:flex;align-items:center;justify-content:center"><i class="ti ti-pencil"></i></span><span onclick="event.stopPropagation();deleteBill('+i+')" style="color:#FCA5A5;font-size:16px;cursor:pointer;padding:8px;min-width:40px;min-height:40px;display:flex;align-items:center;justify-content:center"><i class="ti ti-trash"></i></span></div></div>';}).join(''):'<div style="padding:24px;text-align:center;color:#94A3B8;font-size:13px;font-weight:600">No bills yet. Tap "+ Add bill" above.</div>';}
+function togBill(i){bills[i].paid=!bills[i].paid;save();renderBills();showT(bills[i].n,bills[i].paid?'Marked as paid':'Marked as unpaid');}
+let billEditIdx=null;
+function togBillForm(){const f=document.getElementById('bill-form');const opening=f.classList.contains('hidden');if(opening){billEditIdx=null;document.getElementById('bill-form-title').textContent='New bill';document.getElementById('bn-name').value='';document.getElementById('bn-amt').value='';document.getElementById('bn-due').value='';document.getElementById('bn-icon').value='ti-receipt';document.getElementById('bill-save-btn').textContent='Save bill';}f.classList.toggle('hidden');if(opening)setTimeout(()=>document.getElementById('bn-name').focus(),80);}
+function ordinalDay(d){if(d>3&&d<21)return d+'th';switch(d%10){case 1:return d+'st';case 2:return d+'nd';case 3:return d+'rd';default:return d+'th';}}
+function editBill(i){const b=bills[i];billEditIdx=i;document.getElementById('bill-form-title').textContent='Edit bill';document.getElementById('bn-name').value=b.n;document.getElementById('bn-amt').value=b.a;const dayNum=parseInt(b.due);const today=new Date();if(!isNaN(dayNum)&&dayNum>=1&&dayNum<=31){const y=today.getFullYear();const m=String(today.getMonth()+1).padStart(2,'0');const lastDay=new Date(y,today.getMonth()+1,0).getDate();const dd=String(Math.min(dayNum,lastDay)).padStart(2,'0');document.getElementById('bn-due').value=y+'-'+m+'-'+dd;}else{document.getElementById('bn-due').value='';}document.getElementById('bn-icon').value=b.ic;document.getElementById('bill-save-btn').textContent='Update bill';document.getElementById('bill-form').classList.remove('hidden');document.getElementById('bill-form').scrollIntoView({behavior:'smooth',block:'center'});}
+function saveBillForm(){const n=document.getElementById('bn-name').value.trim();const a=parseFloat(document.getElementById('bn-amt').value);const dateVal=document.getElementById('bn-due').value;let due='--';if(dateVal){const parts=dateVal.split('-');const dayNum=parseInt(parts[2]);due=ordinalDay(dayNum);}const ic=document.getElementById('bn-icon').value;if(!n||isNaN(a)){showT('Missing info','Enter a bill name and amount.');return;}if(billEditIdx!==null){bills[billEditIdx].n=n;bills[billEditIdx].a=a;bills[billEditIdx].due=due;bills[billEditIdx].ic=ic;showT('Bill updated',n+' - $'+a);}else{bills.push({n,a,due,ic,paid:false});showT('Bill added',n+' - $'+a);}save();togBillForm();renderBills();}
+function deleteBill(i){const n=bills[i].n;bills.splice(i,1);save();renderBills();showT('Bill removed',n+' deleted.');}
+function renderGrocery(){document.getElementById('glist').innerHTML=grocery.map((g,i)=>'<div class="g-item'+(g.got?' got':'')+'" onclick="togG('+i+')"><div class="g-chk'+(g.got?' on':'')+'"><i class="ti ti-check"></i></div><div class="g-name">'+g.n+'</div><span class="g-del" onclick="event.stopPropagation();delG('+i+')">x</span></div>').join('')||'<div style="padding:18px;text-align:center;color:#94A3B8;font-size:13px">Add items above.</div>';}
+function togG(i){grocery[i].got=!grocery[i].got;save();renderGrocery();}
+function delG(i){grocery.splice(i,1);save();renderGrocery();}
+function addG(){const v=(document.getElementById('ginp')||{}).value.trim();if(!v)return;grocery.push({n:v,got:false});document.getElementById('ginp').value='';save();renderGrocery();}
+function clearGot(){grocery=grocery.filter(g=>!g.got);save();renderGrocery();showT('Cleared','Done items removed.');}
+let lifeTab='bills';
+function togLifeTab(t,el){lifeTab=t;document.querySelectorAll('#v-life .life-tab').forEach(x=>x.classList.remove('on'));el.classList.add('on');['bills','grocery','home'].forEach(n=>document.getElementById('lt-'+n).classList.toggle('hidden',n!==t));if(t==='bills')renderBills();if(t==='grocery')renderGrocery();}
+
+// INIT
+checkDailyReset();
+checkMonthlyReset();
+renderHome();
+setTimeout(()=>{const nx=tasks.find(t=>!t.done&&t.time);if(nx)showT('Coming up',nx.name+(nx.time?' - '+nx.time:''));},1500);
+const todayIdx=new Date().getDay();weeklyScores[todayIdx]=calcScore().total;ss('hub_ws',weeklyScores);
+if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});}
+</script>
+</body>
+</html>
